@@ -1,0 +1,26 @@
+{
+  "common_ThanhCong" : "Thành công",
+  "common_LoiXayRa": "Đã xảy ra lỗi",
+  "common_LoiThongTinTrong": "Trường không được để trống!",
+  "common_LoiEmailKhongHopLe": "Email không hợp lệ",
+  "common_LoiMK8KyTu": "Mật khẩu phải có ít nhất 8 ký tự",
+  "common_LoiMKKhac": "Mật khẩu không khớp",
+
+  "home_TieuDe" : "Danh sách công việc",
+  "home_HoanThanh" : "Đã hoàn thành",
+  "home_KhongCoDuLieu" : "Không có dữ liệu",
+
+  "auth_DangNhap" : "Đăng nhập",
+  "auth_DangKy" : "Đăng ký",
+  "auth_MatKhau" : "Mật khẩu",
+  "auth_XacNhanMK" : "Xác nhận mật khẩu",
+  "auth_ThanhCongTaoTK" : "Tạo tài khoản thành công",
+
+  "addTask_ThemViec" : "Thêm công việc mới",
+  "addTask_TieuDeViec" : "Tiêu đề công việc",
+  "addTask_Loai" : "Loại",
+  "addTask_Ngay" : "Ngày",
+  "addTask_Gio" : "Giờ",
+  "addTask_GhiChu" : "Ghi chú",
+  "addTask_Luu" : "Lưu"
+}

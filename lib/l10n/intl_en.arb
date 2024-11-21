@@ -1,0 +1,26 @@
+{
+  "common_ThanhCong" : "Success",
+  "common_LoiXayRa": "Error occurred",
+  "common_LoiThongTinTrong": "Field cannot be empty!",
+  "common_LoiEmailKhongHopLe": "Invalid email",
+  "common_LoiMK8KyTu": "Password must be at least 8 characters long",
+  "common_LoiMKKhac": "Passwords do not match",
+
+  "home_TieuDe" : "My Todo List",
+  "home_HoanThanh" : "Completed",
+  "home_KhongCoDuLieu" : "Empty Data",
+
+  "auth_DangNhap" : "Sign In",
+  "auth_DangKy" : "Register",
+  "auth_MatKhau" : "Password",
+  "auth_XacNhanMK" : "Confirm Password",
+  "auth_ThanhCongTaoTK" : "Successfully create new account",
+
+  "addTask_ThemViec" : "Add New Task",
+  "addTask_TieuDeViec" : "Task Title",
+  "addTask_Loai" : "Category",
+  "addTask_Ngay" : "Date",
+  "addTask_Gio" : "Time",
+  "addTask_GhiChu" : "Notes",
+  "addTask_Luu" : "Save"
+}
