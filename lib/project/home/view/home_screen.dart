@@ -157,8 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     );
-                    final item = provider.todoList[index];
-                    return TodoItem(item: item);
+                    // final item = provider.todoList[index];
+                    // return TodoItem(item: item);
                   }, childCount: 1)),
                   // SliverToBoxAdapter(
                   //   child: ColoredBox(
