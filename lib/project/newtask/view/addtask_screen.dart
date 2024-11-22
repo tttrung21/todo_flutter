@@ -16,7 +16,9 @@ import '../../../generated/l10n.dart';
 import '../../../model/todo_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+  const AddTaskScreen({super.key, this.item});
+
+  final TodoModel? item;
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -30,6 +32,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   TextEditingController notesTEC = TextEditingController();
   Category? _category;
   bool _hasInteracted = false;
+  bool _isUpdate = false;
   DateTime? now;
 
   bool getOpacity(Category cat) {
@@ -38,6 +41,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   bool isIos() {
     return Platform.isIOS;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isUpdate = widget.item != null;
+    if (_isUpdate) {
+      titleTEC.text = widget.item?.title ?? '';
+      dateTEC.text = widget.item?.dueDate ?? '';
+      timeTEC.text = widget.item?.dueTime ?? '';
+      notesTEC.text = widget.item?.notes ?? '';
+      _category = Category.values.firstWhere((element) => element.name == widget.item?.category);
+    }
   }
 
   Future<void> getDate(TextEditingController tec) async {
@@ -54,11 +71,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Future<void> getTime(TextEditingController tec) async {
-    final res = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(now ?? DateTime.now()));
+    final res =
+        await showTimePicker(context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
     if (res != null) {
-      // final min = res.minute < 10 ? '0${res.minute}' : '${res.minute}';
-      // tec.text = '${res.hour}:$min ${res.period.name.toUpperCase()}';
       tec.text = ConvertUtils.hms(res);
     }
   }
@@ -231,52 +246,57 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             color: ModColorStyle.primary,
             onPressed: _category == null
                 ? null
-                : () async {
+                : () {
                     if (!_hasInteracted) {
                       _hasInteracted = true;
                       setState(() {});
                     }
                     if (_key.currentState!.validate()) {
-                      ShowLoading.loadingDialog(context);
-                      final provider = Provider.of<TodoProvider>(context, listen: false);
-                      final res = await provider.addTodo(TodoModel(
-                          title: titleTEC.text,
-                          category: _category!.name,
-                          dueDate: dateTEC.text,
-                          dueTime: timeTEC.text,
-                          notes: notesTEC.text,
-                          userId: Supabase.instance.client.auth.currentUser!.id));
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                        if (res) {
-                          Navigator.pop(context);
-                          showDialog(
-                            context: context,
-                            builder: (context) => CommonDialog(
-                                type: EnumTypeDialog.success,
-                                title: S.of(context).common_ThanhCong),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => CommonDialog(
-                              type: EnumTypeDialog.error,
-                              title: S.of(context).common_LoiXayRa,
-                              subtitle: provider.errorMessage,
-                            ),
-                          );
-                        }
-                      }
+                      onButtonPress(context);
                     }
                   },
             child: Text(
-              S.of(context).addTask_Luu,
+              _isUpdate ? S.of(context).addTask_CapNhat : S.of(context).addTask_Luu,
               style: ModTextStyle.button1.copyWith(),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> onButtonPress(BuildContext context) async {
+    ShowLoading.loadingDialog(context);
+    final provider = Provider.of<TodoProvider>(context, listen: false);
+    final todo = TodoModel(
+        id: _isUpdate ? widget.item?.id : null,
+        title: titleTEC.text,
+        category: _category!.name,
+        dueDate: dateTEC.text,
+        dueTime: timeTEC.text,
+        notes: notesTEC.text,
+        userId: Supabase.instance.client.auth.currentUser!.id);
+    final res = _isUpdate ? await provider.updateTodo(todo) : await provider.addTodo(todo);
+    if (context.mounted) {
+      Navigator.pop(context);
+      if (res) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (context) =>
+              CommonDialog(type: EnumTypeDialog.success, title: S.of(context).common_ThanhCong),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+            type: EnumTypeDialog.error,
+            title: S.of(context).common_LoiXayRa,
+            subtitle: provider.errorMessage,
+          ),
+        );
+      }
+    }
   }
 }
 

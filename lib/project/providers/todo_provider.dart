@@ -29,6 +29,9 @@ class TodoProvider with ChangeNotifier {
       final response = await todoService.fetchTodos();
       if (response.isNotEmpty) {
         _todos = TodoModel.fromJsonToList(response);
+        _todos.sort((a, b) {
+          return a.id!.compareTo(b.id!);
+        },);
       }
     } catch (e) {
       errorMessage = e.toString();
@@ -76,7 +79,23 @@ class TodoProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<bool> updateTodo(TodoModel item) async {
+    errorMessage = '';
+    try {
+      ///update on supabase
+      await todoService.updateTodo(item);
 
+      ///update on local
+      final todoIndex = _todos.indexWhere((todo) => todo.id == item.id);
+      if (todoIndex == -1) return false;
+      _todos[todoIndex] = item;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      errorMessage = e.toString();
+      return false;
+    }
+  }
   Future<bool> deleteTodo(int? id) async {
     errorMessage = '';
     _isLoading = true;

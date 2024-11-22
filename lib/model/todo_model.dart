@@ -29,7 +29,15 @@ class TodoModel {
       'user_id' : userId
     };
   }
-
+  Map<String, dynamic> toJsonUpdate() {
+    return {
+      'title': title,
+      'notes': notes,
+      'category': category,
+      'due_date': dueDate,
+      'due_time': dueTime,
+    };
+  }
   factory TodoModel.fromJson(Map<String, dynamic> json) {
     return TodoModel(
       id: json['id'],

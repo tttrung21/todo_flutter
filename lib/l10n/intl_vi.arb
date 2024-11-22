@@ -23,5 +23,6 @@
   "addTask_Ngay" : "Ngày",
   "addTask_Gio" : "Giờ",
   "addTask_GhiChu" : "Ghi chú",
-  "addTask_Luu" : "Lưu"
+  "addTask_Luu" : "Lưu",
+  "addTask_CapNhat" : "Cập nhật"
 }

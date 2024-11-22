@@ -23,5 +23,6 @@
   "addTask_Ngay" : "Date",
   "addTask_Gio" : "Time",
   "addTask_GhiChu" : "Notes",
-  "addTask_Luu" : "Save"
+  "addTask_Luu" : "Save",
+  "addTask_CapNhat" : "Update"
 }

@@ -269,6 +269,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Update`
+  String get addTask_CapNhat {
+    return Intl.message(
+      'Update',
+      name: 'addTask_CapNhat',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

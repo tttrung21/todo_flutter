@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isIos() {
     return Platform.isIOS;
   }
+
   String formatDate(DateTime date, String locale) {
     if (locale == 'vi') {
       return '${date.day} Tháng ${date.month}, ${date.year}';
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return DateFormat('MMMM dd, yyyy', locale).format(date);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TodoProvider>(context);
@@ -112,7 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
                   : const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomScrollView(
-                physics: width > height ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+                physics: width > height
+                    ? const BouncingScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
@@ -121,13 +125,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Flexible(
                           child: Container(
-                            height: height/3.5,
+                            height: height / 3.5,
                             decoration: BoxDecoration(
-                                color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
+                                color: ModColorStyle.white,
+                                borderRadius: BorderRadius.circular(16)),
                             child: ListView.separated(
                               itemBuilder: (context, index) {
                                 final item = provider.todoList[index];
-                                return TodoItem(item: item);
+                                return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => AddTaskScreen(item: item)
+                                      ));
+                                    },
+                                    child: TodoItem(item: item));
                               },
                               itemCount: provider.todoList.length,
                               separatorBuilder: (context, index) =>
@@ -138,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Align(
-                            alignment : Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: Text(
                               S.of(context).home_HoanThanh,
                               style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
@@ -147,9 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Flexible(
                           child: Container(
-                            height: height/3.5,
+                            height: height / 3.5,
                             decoration: BoxDecoration(
-                                color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
+                                color: ModColorStyle.white,
+                                borderRadius: BorderRadius.circular(16)),
                             child: ListView.separated(
                               itemBuilder: (context, index) {
                                 final item = provider.completedList[index];
@@ -157,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               itemCount: provider.completedList.length,
                               separatorBuilder: (context, index) =>
-                              const Divider(color: ModColorStyle.disable, thickness: 0.1),
+                                  const Divider(color: ModColorStyle.disable, thickness: 0.1),
                             ),
                           ),
                         ),

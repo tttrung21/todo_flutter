@@ -38,7 +38,7 @@ class TodoItem extends StatelessWidget {
             },
             direction: DismissDirection.endToStart,
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16,16,8,8),
               child: Row(
                 children: [
                   Opacity(
@@ -53,6 +53,8 @@ class TodoItem extends StatelessWidget {
                       children: [
                         Text(
                           item.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: ModTextStyle.item1.copyWith(
                               color: isCompleted() ? ModColorStyle.subTitle : ModColorStyle.title,
                               decoration: isCompleted() ? TextDecoration.lineThrough : null,

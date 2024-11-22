@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addTask_CapNhat": MessageLookupByLibrary.simpleMessage("Cập nhật"),
         "addTask_GhiChu": MessageLookupByLibrary.simpleMessage("Ghi chú"),
         "addTask_Gio": MessageLookupByLibrary.simpleMessage("Giờ"),
         "addTask_Loai": MessageLookupByLibrary.simpleMessage("Loại"),
