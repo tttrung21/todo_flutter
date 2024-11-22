@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,8 +37,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return _category == cat || _category == null;
   }
 
+  bool isIos() {
+    return Platform.isIOS;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width;
+    final height = mq.size.height;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -75,7 +85,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             autovalidateMode:
                 _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: (isIos() && width > height)
+                  ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+                  : const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

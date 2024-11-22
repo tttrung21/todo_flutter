@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  bool isIos() {
+    return Platform.isIOS;
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TodoProvider>(context);
@@ -41,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final locale = langProvider.locale.toString();
     date = DateFormat('MMMM d, yyyy', locale).format(now);
+
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width;
+    final height = mq.size.height;
     return Scaffold(
       backgroundColor: ModColorStyle.background,
       appBar: AppBar(
@@ -86,34 +96,87 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const SizedBox(
               height: 80, width: double.infinity, child: ColoredBox(color: ModColorStyle.primary)),
-          Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          Padding(
+              // decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
+              // margin: (isIos() && width > height)
+              //     ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+              //     : const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: (isIos() && width > height)
+                  ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+                  : const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomScrollView(
+                physics: width > height ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Container(
+                            height: height/3.5,
+                            decoration: BoxDecoration(
+                                color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
+                            child: ListView.separated(
+                              itemBuilder: (context, index) {
+                                final item = provider.todoList[index];
+                                return TodoItem(item: item);
+                              },
+                              itemCount: provider.todoList.length,
+                              separatorBuilder: (context, index) =>
+                                  const Divider(color: ModColorStyle.disable, thickness: 0.1),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Align(
+                            alignment : Alignment.centerLeft,
+                            child: Text(
+                              S.of(context).home_HoanThanh,
+                              style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Container(
+                            height: height/3.5,
+                            decoration: BoxDecoration(
+                                color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
+                            child: ListView.separated(
+                              itemBuilder: (context, index) {
+                                final item = provider.completedList[index];
+                                return TodoItem(item: item);
+                              },
+                              itemCount: provider.completedList.length,
+                              separatorBuilder: (context, index) =>
+                              const Divider(color: ModColorStyle.disable, thickness: 0.1),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                     final item = provider.todoList[index];
                     return TodoItem(item: item);
-                  }, childCount: provider.todoList.length)),
-                  SliverToBoxAdapter(
-                    child: ColoredBox(
-                      color: ModColorStyle.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          S.of(context).home_HoanThanh,
-                          style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                    final item = provider.completedList[index];
-                    return TodoItem(item: item);
-                  }, childCount: provider.completedList.length)),
+                  }, childCount: 1)),
+                  // SliverToBoxAdapter(
+                  //   child: ColoredBox(
+                  //     color: ModColorStyle.background,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(16),
+                  //       child: Text(
+                  //         S.of(context).home_HoanThanh,
+                  //         style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SliverList(
+                  //     delegate: SliverChildBuilderDelegate((context, index) {
+                  //   final item = provider.completedList[index];
+                  //   return TodoItem(item: item);
+                  // }, childCount: provider.completedList.length)),
                 ],
               )
               // Column(
