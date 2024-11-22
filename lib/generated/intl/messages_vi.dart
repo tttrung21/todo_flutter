@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "common_LoiXayRa":
             MessageLookupByLibrary.simpleMessage("Đã xảy ra lỗi"),
         "common_ThanhCong": MessageLookupByLibrary.simpleMessage("Thành công"),
+        "common_Xoa": MessageLookupByLibrary.simpleMessage("Xóa"),
         "home_HoanThanh": MessageLookupByLibrary.simpleMessage("Đã hoàn thành"),
         "home_KhongCoDuLieu":
             MessageLookupByLibrary.simpleMessage("Không có dữ liệu"),

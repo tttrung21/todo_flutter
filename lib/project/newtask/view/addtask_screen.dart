@@ -10,6 +10,7 @@ import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/project/providers/todo_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
+import 'package:todo_app/utils/convert_utils.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
@@ -39,6 +40,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   bool isIos() {
     return Platform.isIOS;
+  }
+
+  Future<void> getDate(TextEditingController tec) async {
+    final res = await showDatePicker(
+        context: context,
+        currentDate: now ?? DateTime.now(),
+        initialDate: now ?? DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year + 2));
+    if (res != null) {
+      now = res;
+      tec.text = ConvertUtils.dMy(now);
+    }
+  }
+
+  Future<void> getTime(TextEditingController tec) async {
+    final res = await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(now ?? DateTime.now()));
+    if (res != null) {
+      // final min = res.minute < 10 ? '0${res.minute}' : '${res.minute}';
+      // tec.text = '${res.hour}:$min ${res.period.name.toUpperCase()}';
+      tec.text = ConvertUtils.hms(res);
+    }
   }
 
   @override
@@ -155,17 +179,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               dateTEC,
                               readOnly: true,
                               image: Image.asset('assets/images/calendar.png'),
-                              onTap: () async {
-                                final res = await showDatePicker(
-                                    context: context,
-                                    currentDate: now ?? DateTime.now(),
-                                    initialDate: now ?? DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime(DateTime.now().year + 2));
-                                if (res != null) {
-                                  now = res;
-                                  dateTEC.text = DateFormat('dd/MM/yyyy').format(now!);
-                                }
+                              onTap: () {
+                                getDate(dateTEC);
                               },
                               validator: (value) {
                                 if (value!.isEmpty && _hasInteracted) {
@@ -188,16 +203,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             const SizedBox(
                               height: 4,
                             ),
-                            normalTextFormField(S.of(context).addTask_Gio, timeTEC, readOnly: true,
-                                image: Image.asset('assets/images/clock.png'),
-                                onTap: () async {
-                              final res = await showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.fromDateTime(now ?? DateTime.now()));
-                              if (res != null) {
-                                final min = res.minute < 10 ? '0${res.minute}' : '${res.minute}';
-                                timeTEC.text = '${res.hour}:$min ${res.period.name.toUpperCase()}';
-                              }
+                            normalTextFormField(S.of(context).addTask_Gio, timeTEC,
+                                readOnly: true,
+                                image: Image.asset('assets/images/clock.png'), onTap: () {
+                              getTime(timeTEC);
                             })
                           ],
                         ),

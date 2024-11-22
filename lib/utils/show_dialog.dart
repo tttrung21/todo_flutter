@@ -51,7 +51,7 @@ class CommonDialog extends StatelessWidget {
                 ),
               CupertinoButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: const Text('OK'),
               )
             ],

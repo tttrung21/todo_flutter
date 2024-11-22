@@ -39,14 +39,20 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isIos() {
     return Platform.isIOS;
   }
-
+  String formatDate(DateTime date, String locale) {
+    if (locale == 'vi') {
+      return '${date.day} Tháng ${date.month}, ${date.year}';
+    } else {
+      return DateFormat('MMMM dd, yyyy', locale).format(date);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TodoProvider>(context);
     final langProvider = Provider.of<LanguageProvider>(context);
 
     final locale = langProvider.locale.toString();
-    date = DateFormat('MMMM d, yyyy', locale).format(now);
+    date = formatDate(now, locale);
 
     final mq = MediaQuery.of(context);
     final width = mq.size.width;

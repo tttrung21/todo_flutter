@@ -8,7 +8,6 @@ import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/project/providers/language_provider.dart';
 import 'package:todo_app/project/providers/todo_provider.dart';
 import 'package:todo_app/shared/configs.dart';
-import 'package:todo_app/shared/device_utils.dart';
 
 import 'generated/l10n.dart';
 
@@ -50,12 +49,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Builder(
-        builder: (context) {
-          DeviceUtils.init(context);
-          return client.currentSession == null ? const LoginScreen() : const HomeScreen();
-        },
-      ),
+      home: client.currentSession == null ? const LoginScreen() : const HomeScreen()
+
     );
   }
 }

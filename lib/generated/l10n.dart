@@ -110,6 +110,16 @@ class S {
     );
   }
 
+  /// `Delete`
+  String get common_Xoa {
+    return Intl.message(
+      'Delete',
+      name: 'common_Xoa',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `My Todo List`
   String get home_TieuDe {
     return Intl.message(

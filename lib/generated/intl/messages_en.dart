@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "common_LoiXayRa":
             MessageLookupByLibrary.simpleMessage("Error occurred"),
         "common_ThanhCong": MessageLookupByLibrary.simpleMessage("Success"),
+        "common_Xoa": MessageLookupByLibrary.simpleMessage("Delete"),
         "home_HoanThanh": MessageLookupByLibrary.simpleMessage("Completed"),
         "home_KhongCoDuLieu":
             MessageLookupByLibrary.simpleMessage("Empty Data"),

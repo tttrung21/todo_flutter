@@ -5,6 +5,7 @@
   "common_LoiEmailKhongHopLe": "Invalid email",
   "common_LoiMK8KyTu": "Password must be at least 8 characters long",
   "common_LoiMKKhac": "Passwords do not match",
+  "common_Xoa": "Delete",
 
   "home_TieuDe" : "My Todo List",
   "home_HoanThanh" : "Completed",
