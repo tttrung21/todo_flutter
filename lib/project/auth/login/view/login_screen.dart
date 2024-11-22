@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/text_field.dart';
-import 'package:todo_app/project/home/view/home_screen.dart';
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
@@ -11,6 +10,7 @@ import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
 import '../../../../generated/l10n.dart';
+import '../../../task/home/view/home_screen.dart';
 import '../../register/view/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     emailTEC.dispose();
     passwordTEC.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthProvider>(context, listen: false);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Email',
                     emailTEC,
                     validator: (value) {
-                      if(_hasInteracted){
+                      if (_hasInteracted) {
                         if (value!.isEmpty) {
                           return S.of(context).common_LoiThongTinTrong;
                         }
@@ -101,13 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextButton(
                           onPressed: () {
                             FocusManager.instance.primaryFocus?.unfocus();
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => const RegisterScreen()));
                             emailTEC.clear();
                             passwordTEC.clear();
                           },
                           child: Text(
-                          S.of(context).auth_DangKy,
+                            S.of(context).auth_DangKy,
                             style: ModTextStyle.label.copyWith(color: ModColorStyle.primary),
                           )),
                       CupertinoButton(
@@ -121,25 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             }
                             if (_key.currentState!.validate()) {
-                              ShowLoading.loadingDialog(context);
-                              final res = await provider.signIn(emailTEC.text, passwordTEC.text);
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                                if (res) {
-                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(),
-                                  ));
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => CommonDialog(
-                                      type: EnumTypeDialog.error,
-                                      title: S.of(context).common_LoiXayRa,
-                                      subtitle: provider.errorMessage,
-                                    ),
-                                  );
-                                }
-                              }
+                              onLogin(context);
                             }
                           },
                           child: Text(
@@ -158,5 +140,28 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onLogin(BuildContext context) async {
+    final provider = Provider.of<AuthProvider>(context, listen: false);
+    ShowLoading.loadingDialog(context);
+    final res = await provider.signIn(emailTEC.text, passwordTEC.text);
+    if (context.mounted) {
+      Navigator.pop(context);
+      if (res) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ));
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+            type: EnumTypeDialog.error,
+            title: S.of(context).common_LoiXayRa,
+            subtitle: provider.errorMessage,
+          ),
+        );
+      }
+    }
   }
 }

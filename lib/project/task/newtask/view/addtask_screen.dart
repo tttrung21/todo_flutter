@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/components/text_field.dart';
-import 'package:todo_app/project/providers/todo_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/convert_utils.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
-import '../../../generated/l10n.dart';
-import '../../../model/todo_model.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../model/todo_model.dart';
+import '../../providers/todo_provider.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key, this.item});

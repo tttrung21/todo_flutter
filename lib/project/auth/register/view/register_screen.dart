@@ -37,7 +37,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthProvider>(context,listen: false);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -65,10 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'Email',
                     emailTEC,
                     validator: (value) {
-                      if(_hasInteracted){
+                      if (_hasInteracted) {
                         if (value!.isEmpty) {
                           return S.of(context).common_LoiThongTinTrong;
-
                         }
                         if (!EmailValidator.validate(value)) {
                           return S.of(context).common_LoiEmailKhongHopLe;
@@ -99,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     confirmTEC,
                     isObscure: true,
                     validator: (value) {
-                      if(_hasInteracted){
+                      if (_hasInteracted) {
                         if (value!.isEmpty) {
                           return S.of(context).common_LoiThongTinTrong;
                         }
@@ -124,33 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         }
                         if (_key.currentState!.validate()) {
-                          ShowLoading.loadingDialog(context);
-                          final res = await provider.signUp(emailTEC.text, passwordTEC.text);
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                            if (res) {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ));
-                              showDialog(
-                                context: context,
-                                builder: (context) =>  CommonDialog(
-                                  type: EnumTypeDialog.success,
-                                  title: S.of(context).common_ThanhCong,
-                                  subtitle: S.of(context).auth_ThanhCongTaoTK,
-                                ),
-                              );
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) => CommonDialog(
-                                  type: EnumTypeDialog.error,
-                                  title: S.of(context).common_LoiXayRa,
-                                  subtitle: provider.errorMessage,
-                                ),
-                              );
-                            }
-                          }
+                          onRegister(context);
                         }
                       },
                       child: Text(
@@ -164,5 +136,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onRegister(BuildContext context) async {
+    final provider = Provider.of<AuthProvider>(context, listen: false);
+    ShowLoading.loadingDialog(context);
+    final res = await provider.signUp(emailTEC.text, passwordTEC.text);
+    if (context.mounted) {
+      Navigator.pop(context);
+      if (res) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ));
+        showDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+            type: EnumTypeDialog.success,
+            title: S.of(context).common_ThanhCong,
+            subtitle: S.of(context).auth_ThanhCongTaoTK,
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+            type: EnumTypeDialog.error,
+            title: S.of(context).common_LoiXayRa,
+            subtitle: provider.errorMessage,
+          ),
+        );
+      }
+    }
   }
 }

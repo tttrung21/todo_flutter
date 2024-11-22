@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/todo_model.dart';
-import 'package:todo_app/project/providers/todo_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
-import '../../../generated/l10n.dart';
+import '../../../../generated/l10n.dart';
+import '../../providers/todo_provider.dart';
+
 
 class TodoItem extends StatelessWidget {
   const TodoItem({super.key, required this.item});

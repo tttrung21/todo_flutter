@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/project/home/view/todo_item.dart';
-import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
-import 'package:todo_app/project/providers/language_provider.dart';
+import 'package:todo_app/localization/language_provider.dart';
+import 'package:todo_app/project/task/home/view/todo_item.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 
-import '../../../generated/l10n.dart';
-import '../../auth/login/view/login_screen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../auth/login/view/login_screen.dart';
+import '../../newtask/view/addtask_screen.dart';
 import '../../providers/todo_provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -82,11 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(right: 16.0),
             child: InkWell(
               onTap: () {
-                final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                authProvider.logout();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ));
+                onLogout(context);
               },
               child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
             ),
@@ -105,11 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
               height: 80, width: double.infinity, child: ColoredBox(color: ModColorStyle.primary)),
           Padding(
-              // decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              // margin: (isIos() && width > height)
-              //     ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
-              //     : const EdgeInsets.fromLTRB(16, 16, 16, 8),
               padding: (isIos() && width > height)
                   ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
                   : const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -135,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => AddTaskScreen(item: item)
-                                      ));
+                                          builder: (context) => AddTaskScreen(item: item)));
                                     },
                                     child: TodoItem(item: item));
                               },
@@ -175,58 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     );
-                    // final item = provider.todoList[index];
-                    // return TodoItem(item: item);
                   }, childCount: 1)),
-                  // SliverToBoxAdapter(
-                  //   child: ColoredBox(
-                  //     color: ModColorStyle.background,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(16),
-                  //       child: Text(
-                  //         S.of(context).home_HoanThanh,
-                  //         style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // SliverList(
-                  //     delegate: SliverChildBuilderDelegate((context, index) {
-                  //   final item = provider.completedList[index];
-                  //   return TodoItem(item: item);
-                  // }, childCount: provider.completedList.length)),
                 ],
-              )
-              // Column(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //         // height: 500,
-              //         // width: DeviceUtils.screenWidth - 32,
-              //         decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              //         child: ListView.separated(
-              //           itemBuilder: (context, index) {
-              //             if (provider.todos.isEmpty) {
-              //               return Center(
-              //                 child: Text(
-              //                   S.of(context).home_KhongCoDuLieu,
-              //                   style: ModTextStyle.title1.copyWith(color: ModColorStyle.label),
-              //                 ),
-              //               );
-              //             }
-              //             final item = provider.todos[index];
-              //             return TodoItem(item: item);
-              //           },
-              //           itemCount: provider.todos.length,
-              //           separatorBuilder: (context, index) =>
-              //               const Divider(color: Colors.grey, thickness: 0.1),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // )
-              ),
+              )),
           if (provider.isLoading)
             const Center(
                 child: CircularProgressIndicator(
@@ -252,5 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+  void onLogout(BuildContext context){
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    authProvider.logout();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    ));
   }
 }

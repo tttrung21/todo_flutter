@@ -3,10 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/project/auth/login/view/login_screen.dart';
-import 'package:todo_app/project/home/view/home_screen.dart';
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
-import 'package:todo_app/project/providers/language_provider.dart';
-import 'package:todo_app/project/providers/todo_provider.dart';
+import 'package:todo_app/localization/language_provider.dart';
+import 'package:todo_app/project/task/home/view/home_screen.dart';
+import 'package:todo_app/project/task/providers/todo_provider.dart';
 import 'package:todo_app/shared/configs.dart';
 
 import 'generated/l10n.dart';
