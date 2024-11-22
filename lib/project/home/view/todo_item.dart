@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/api_service/todo_service.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/project/providers/todo_provider.dart';
 import 'package:todo_app/style/color_style.dart';
