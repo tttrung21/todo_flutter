@@ -3,19 +3,23 @@ import 'package:todo_app/api_service/todo_service.dart';
 
 import '../../model/todo_model.dart';
 
-class TodoProvider with ChangeNotifier{
+class TodoProvider with ChangeNotifier {
   List<TodoModel> _todos = [];
-  List<TodoModel> _completedList = [];
-  List<TodoModel> _todoList = [];
   bool _isLoading = false;
   final todoService = TodoService();
   String errorMessage = '';
 
   List<TodoModel> get todos => _todos;
+
   List<TodoModel> get completedList => _todos.where((element) => element.isCompleted).toList();
+
   List<TodoModel> get todoList => _todos.where((element) => !element.isCompleted).toList();
 
   bool get isLoading => _isLoading;
+
+  TodoModel getTodo(int? id) {
+    return _todos.firstWhere((element) => element.id == id);
+  }
 
   Future<void> fetchTodos() async {
     _isLoading = true;
@@ -34,27 +38,29 @@ class TodoProvider with ChangeNotifier{
       notifyListeners();
     }
   }
-  Future<bool> addTodo(TodoModel todo) async{
+
+  Future<bool> addTodo(TodoModel todo) async {
     errorMessage = '';
-    try{
+    try {
       await todoService.createTodo(todo);
       _todos.add(todo);
       notifyListeners();
       return true;
-    }
-    catch(e){
+    } catch (e) {
       errorMessage = e.toString();
       return false;
     }
   }
-  Future<void> toggleComplete(int? id) async{
+
+  Future<void> toggleComplete(int? id) async {
     errorMessage = '';
     _isLoading = true;
     notifyListeners();
-    try{
+    try {
       ///update on supabase
       final todo = getTodo(id);
       await todoService.toggleComplete(id!, !todo.isCompleted);
+
       ///update on local
       final todoIndex = _todos.indexWhere((todo) => todo.id == id);
       if (todoIndex == -1) return;
@@ -62,17 +68,32 @@ class TodoProvider with ChangeNotifier{
         isCompleted: !_todos[todoIndex].isCompleted,
       );
       _todos[todoIndex] = updatedTodo;
-    }
-    catch(e){
+    } catch (e) {
       errorMessage = e.toString();
       rethrow;
-    }
-    finally{
+    } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
-  TodoModel getTodo(int? id){
-    return _todos.firstWhere((element) => element.id == id);
+
+  Future<bool> deleteTodo(int? id) async {
+    errorMessage = '';
+    _isLoading = true;
+    notifyListeners();
+    try {
+      ///delete on supabase
+      await todoService.deleteTodo(id!);
+
+      ///delete on local
+      _todos.removeWhere((element) => element.id == id);
+      return true;
+    } catch (e) {
+      errorMessage = e.toString();
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

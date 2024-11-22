@@ -20,4 +20,12 @@ class TodoService {
         .eq('id', id)
         .eq('user_id', client.auth.currentUser?.id ?? '');
   }
+
+  Future<void> deleteTodo(int id) async {
+    await client
+        .from('Todo')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', client.auth.currentUser?.id ?? '');
+  }
 }

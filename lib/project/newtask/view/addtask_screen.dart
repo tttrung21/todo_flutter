@@ -154,10 +154,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               S.of(context).addTask_Ngay,
                               dateTEC,
                               readOnly: true,
+                              image: Image.asset('assets/images/calendar.png'),
                               onTap: () async {
                                 final res = await showDatePicker(
                                     context: context,
                                     currentDate: now ?? DateTime.now(),
+                                    initialDate: now ?? DateTime.now(),
                                     firstDate: DateTime.now(),
                                     lastDate: DateTime(DateTime.now().year + 2));
                                 if (res != null) {
@@ -187,6 +189,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               height: 4,
                             ),
                             normalTextFormField(S.of(context).addTask_Gio, timeTEC, readOnly: true,
+                                image: Image.asset('assets/images/clock.png'),
                                 onTap: () async {
                               final res = await showTimePicker(
                                   context: context,

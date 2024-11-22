@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 
-enum EnumTypeDialog { success, error }
+enum EnumTypeDialog { success, error , warning }
 
 class CommonDialog extends StatelessWidget {
   const CommonDialog({super.key, required this.type, required this.title, this.subtitle});
@@ -48,18 +49,26 @@ class CommonDialog extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
+              CupertinoButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                padding: EdgeInsets.all(16),
+                child: const Text('OK'),
+              )
             ],
           ),
         ),
       ),
     );
   }
+
   IconData _buildType() {
     switch (type) {
       case EnumTypeDialog.error:
         return Icons.error;
       case EnumTypeDialog.success:
         return Icons.check_circle;
+      case EnumTypeDialog.warning:
+        return Icons.warning;
       default:
         return Icons.check_circle;
     }
@@ -71,6 +80,8 @@ class CommonDialog extends StatelessWidget {
         return ModColorStyle.error;
       case EnumTypeDialog.success:
         return ModColorStyle.success;
+      case EnumTypeDialog.warning:
+        return ModColorStyle.warning;
       default:
         return ModColorStyle.primary;
     }
