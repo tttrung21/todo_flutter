@@ -45,7 +45,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isUpdate = widget.item != null;
     if (_isUpdate) {
