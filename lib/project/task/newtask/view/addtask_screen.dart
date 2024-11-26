@@ -14,6 +14,7 @@ import 'package:todo_app/utils/show_dialog.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/project/task/providers/todo_provider.dart';
+import 'package:todo_app/utils/validate.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key, this.item});
@@ -186,8 +187,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           S.of(context).addTask_TaskTitle,
           _titleTEC,
           validator: (value) {
-            if (value!.isEmpty && _hasInteracted) {
-              return S.of(context).common_EmptyField;
+            if (_hasInteracted) {
+              return CommonValidate.validateEmpty(value,context);
             }
             return null;
           },
@@ -217,8 +218,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   _getDate(_dateTEC);
                 },
                 validator: (value) {
-                  if (value!.isEmpty && _hasInteracted) {
-                    return S.of(context).common_EmptyField;
+                  if (_hasInteracted) {
+                    return CommonValidate.validateEmpty(value,context);
                   }
                   return null;
                 },

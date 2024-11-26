@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +9,7 @@ import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
+import 'package:todo_app/utils/validate.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -75,12 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _emailTEC,
                 validator: (value) {
                   if (_hasInteracted) {
-                    if (value!.isEmpty) {
-                      return S.of(context).common_EmptyField;
-                    }
-                    if (!EmailValidator.validate(value)) {
-                      return S.of(context).common_InvalidEmail;
-                    }
+                    return CommonValidate.validateEmail(value, context);
                   }
                   return null;
                 },
@@ -94,12 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isObscure: true,
                 validator: (value) {
                   if (_hasInteracted) {
-                    if (value!.isEmpty) {
-                      return S.of(context).common_EmptyField;
-                    }
-                    if (value.length < 8) {
-                      return S.of(context).common_PasswordErrorLength;
-                    }
+                    return CommonValidate.validatePassword(value, context);
                   }
                   return null;
                 },
@@ -113,12 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isObscure: true,
                 validator: (value) {
                   if (_hasInteracted) {
-                    if (value!.isEmpty) {
-                      return S.of(context).common_EmptyField;
-                    }
-                    if (_passwordTEC.text.isNotEmpty && value != _passwordTEC.text) {
-                      return S.of(context).common_PasswordErrorMatch;
-                    }
+                    return CommonValidate.validateConfirm(value, _passwordTEC.text, context);
                   }
                   return null;
                 },
@@ -133,7 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-  Widget get _buildRegisterButton{
+
+  Widget get _buildRegisterButton {
     return CupertinoButton(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         color: ModColorStyle.primary,
@@ -153,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
         ));
   }
+
   ///Function
   Future<void> onRegister(BuildContext context) async {
     final provider = Provider.of<AuthProvider>(context, listen: false);

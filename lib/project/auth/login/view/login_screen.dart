@@ -11,6 +11,7 @@ import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
+import 'package:todo_app/utils/validate.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -78,12 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 _emailTEC,
                 validator: (value) {
                   if (_hasInteracted) {
-                    if (value!.isEmpty) {
-                      return S.of(context).common_EmptyField;
-                    }
-                    if (!EmailValidator.validate(value)) {
-                      return S.of(context).common_InvalidEmail;
-                    }
+                    return CommonValidate.validateEmail(value, context);
                   }
                   return null;
                 },
@@ -97,12 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isObscure: true,
                 validator: (value) {
                   if (_hasInteracted) {
-                    if (value!.isEmpty) {
-                      return S.of(context).common_EmptyField;
-                    }
-                    if (value.length < 8) {
-                      return S.of(context).common_PasswordErrorLength;
-                    }
+                    return CommonValidate.validatePassword(value, context);
                   }
                   return null;
                 },
@@ -135,10 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
+          _hasInteracted = false;
+          _key.currentState?.reset();
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
           _emailTEC.clear();
           _passwordTEC.clear();
+
         },
         child: Text(
           S.of(context).auth_Register,
