@@ -70,9 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
           color: ModColorStyle.background,
           child: normalCupertinoButton(
               onPress: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddTaskScreen(),
-                ));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => const AddTaskScreen(),
+                // ));
+                Navigator.of(context).push(_createRouteAddTask());
               },
               title: S.of(context).addTask_AddTask)),
     );
@@ -192,5 +193,26 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       langProvider.setLanguage('vi');
     }
+  }
+
+  Route _createRouteAddTask() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const AddTaskScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          final tween = Tween(begin: begin, end: end);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
+
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+        });
   }
 }
