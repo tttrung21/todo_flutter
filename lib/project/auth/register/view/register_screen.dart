@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/text_field.dart';
+import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/project/auth/login/view/login_screen.dart';
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
-
-import '../../../../generated/l10n.dart';
-import '../../../../utils/show_dialog.dart';
-import '../../login/view/login_screen.dart';
+import 'package:todo_app/utils/show_dialog.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -22,17 +21,17 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _key = GlobalKey<FormState>();
 
-  final TextEditingController emailTEC = TextEditingController();
-  final TextEditingController passwordTEC = TextEditingController();
-  final TextEditingController confirmTEC = TextEditingController();
+  final _emailTEC = TextEditingController();
+  final _passwordTEC = TextEditingController();
+  final _confirmTEC = TextEditingController();
   bool _hasInteracted = false;
 
   @override
   void dispose() {
     super.dispose();
-    emailTEC.dispose();
-    passwordTEC.dispose();
-    confirmTEC.dispose();
+    _emailTEC.dispose();
+    _passwordTEC.dispose();
+    _confirmTEC.dispose();
   }
 
   @override
@@ -41,107 +40,124 @@ class _RegisterScreenState extends State<RegisterScreen> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: ModColorStyle.primary,
-        appBar: AppBar(
-          backgroundColor: ModColorStyle.primary,
-          leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(CupertinoIcons.back, size: 24, color: ModColorStyle.white),
-          ),
-        ),
-        body: SingleChildScrollView(
+        appBar: _buildAppBar,
+        body: _buildBody,
+      ),
+    );
+  }
+
+  ///Widget
+  AppBar get _buildAppBar {
+    return AppBar(
+      backgroundColor: ModColorStyle.primary,
+      leading: IconButton(
+        onPressed: () => Navigator.pop(context),
+        icon: const Icon(CupertinoIcons.back, size: 24, color: ModColorStyle.white),
+      ),
+    );
+  }
+
+  Widget get _buildBody {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _key,
+        autovalidateMode:
+            _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+        child: Container(
           padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _key,
-            autovalidateMode:
-                _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              child: Column(
-                children: [
-                  normalTextFormField(
-                    'Email',
-                    emailTEC,
-                    validator: (value) {
-                      if (_hasInteracted) {
-                        if (value!.isEmpty) {
-                          return S.of(context).common_LoiThongTinTrong;
-                        }
-                        if (!EmailValidator.validate(value)) {
-                          return S.of(context).common_LoiEmailKhongHopLe;
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  normalTextFormField(
-                    S.of(context).auth_MatKhau,
-                    passwordTEC,
-                    isObscure: true,
-                    validator: (value) {
-                      if (value!.isEmpty && _hasInteracted) {
-                        return S.of(context).common_LoiThongTinTrong;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  normalTextFormField(
-                    S.of(context).auth_XacNhanMK,
-                    confirmTEC,
-                    isObscure: true,
-                    validator: (value) {
-                      if (_hasInteracted) {
-                        if (value!.isEmpty) {
-                          return S.of(context).common_LoiThongTinTrong;
-                        }
-                        if (passwordTEC.text.isNotEmpty && value != passwordTEC.text) {
-                          return S.of(context).common_LoiMKKhac;
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  CupertinoButton(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      color: ModColorStyle.primary,
-                      onPressed: () async {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (!_hasInteracted) {
-                          setState(() {
-                            _hasInteracted = true;
-                          });
-                        }
-                        if (_key.currentState!.validate()) {
-                          onRegister(context);
-                        }
-                      },
-                      child: Text(
-                        S.of(context).auth_DangKy,
-                        style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-                      ))
-                ],
+          decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
+          child: Column(
+            children: [
+              normalTextFormField(
+                'Email',
+                _emailTEC,
+                validator: (value) {
+                  if (_hasInteracted) {
+                    if (value!.isEmpty) {
+                      return S.of(context).common_EmptyField;
+                    }
+                    if (!EmailValidator.validate(value)) {
+                      return S.of(context).common_InvalidEmail;
+                    }
+                  }
+                  return null;
+                },
               ),
-            ),
+              const SizedBox(
+                height: 8,
+              ),
+              normalTextFormField(
+                S.of(context).auth_Password,
+                _passwordTEC,
+                isObscure: true,
+                validator: (value) {
+                  if (_hasInteracted) {
+                    if (value!.isEmpty) {
+                      return S.of(context).common_EmptyField;
+                    }
+                    if (value.length < 8) {
+                      return S.of(context).common_PasswordErrorLength;
+                    }
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              normalTextFormField(
+                S.of(context).auth_ConfirmPassword,
+                _confirmTEC,
+                isObscure: true,
+                validator: (value) {
+                  if (_hasInteracted) {
+                    if (value!.isEmpty) {
+                      return S.of(context).common_EmptyField;
+                    }
+                    if (_passwordTEC.text.isNotEmpty && value != _passwordTEC.text) {
+                      return S.of(context).common_PasswordErrorMatch;
+                    }
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              _buildRegisterButton
+            ],
           ),
         ),
       ),
     );
   }
-
+  Widget get _buildRegisterButton{
+    return CupertinoButton(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        color: ModColorStyle.primary,
+        onPressed: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
+          if (!_hasInteracted) {
+            setState(() {
+              _hasInteracted = true;
+            });
+          }
+          if (_key.currentState!.validate()) {
+            onRegister(context);
+          }
+        },
+        child: Text(
+          S.of(context).auth_Register,
+          style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+        ));
+  }
+  ///Function
   Future<void> onRegister(BuildContext context) async {
     final provider = Provider.of<AuthProvider>(context, listen: false);
     ShowLoading.loadingDialog(context);
-    final res = await provider.signUp(emailTEC.text, passwordTEC.text);
+    final res = await provider.signUp(_emailTEC.text, _passwordTEC.text);
     if (context.mounted) {
       Navigator.pop(context);
       if (res) {
@@ -152,8 +168,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           context: context,
           builder: (context) => CommonDialog(
             type: EnumTypeDialog.success,
-            title: S.of(context).common_ThanhCong,
-            subtitle: S.of(context).auth_ThanhCongTaoTK,
+            title: S.of(context).common_Success,
+            subtitle: S.of(context).auth_CreateSuccess,
           ),
         );
       } else {
@@ -161,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           context: context,
           builder: (context) => CommonDialog(
             type: EnumTypeDialog.error,
-            title: S.of(context).common_LoiXayRa,
+            title: S.of(context).common_Error,
             subtitle: provider.errorMessage,
           ),
         );

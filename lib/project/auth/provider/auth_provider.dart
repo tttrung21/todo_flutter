@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/api_service/user_service.dart';
-import 'package:todo_app/model/user_model.dart';
 
 class AuthProvider with ChangeNotifier {
   final _userService = UserService();
-  UserModel? _user;
   String? errorMessage;
-
-  UserModel? get user => _user;
+  // UserModel? _user;
+  // UserModel? get user => _user;
 
   Future<bool> signIn(String email, String password) async {
     errorMessage = '';

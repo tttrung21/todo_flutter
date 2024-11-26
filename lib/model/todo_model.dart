@@ -1,12 +1,12 @@
 class TodoModel {
-  int? id;
-  String title;
-  String? notes;
-  String category;
-  String dueDate;
-  String? dueTime;
-  bool isCompleted;
-  String userId;
+  final int? id;
+  final String title;
+  final String? notes;
+  final String category;
+  final String dueDate;
+  final String? dueTime;
+  final bool isCompleted;
+  final String userId;
   TodoModel({
     this.id,
     required this.title,

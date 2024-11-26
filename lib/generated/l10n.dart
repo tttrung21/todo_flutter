@@ -51,230 +51,230 @@ class S {
   }
 
   /// `Success`
-  String get common_ThanhCong {
+  String get common_Success {
     return Intl.message(
       'Success',
-      name: 'common_ThanhCong',
+      name: 'common_Success',
       desc: '',
       args: [],
     );
   }
 
   /// `Error occurred`
-  String get common_LoiXayRa {
+  String get common_Error {
     return Intl.message(
       'Error occurred',
-      name: 'common_LoiXayRa',
+      name: 'common_Error',
       desc: '',
       args: [],
     );
   }
 
   /// `Field cannot be empty!`
-  String get common_LoiThongTinTrong {
+  String get common_EmptyField {
     return Intl.message(
       'Field cannot be empty!',
-      name: 'common_LoiThongTinTrong',
+      name: 'common_EmptyField',
       desc: '',
       args: [],
     );
   }
 
   /// `Invalid email`
-  String get common_LoiEmailKhongHopLe {
+  String get common_InvalidEmail {
     return Intl.message(
       'Invalid email',
-      name: 'common_LoiEmailKhongHopLe',
+      name: 'common_InvalidEmail',
       desc: '',
       args: [],
     );
   }
 
   /// `Password must be at least 8 characters long`
-  String get common_LoiMK8KyTu {
+  String get common_PasswordErrorLength {
     return Intl.message(
       'Password must be at least 8 characters long',
-      name: 'common_LoiMK8KyTu',
+      name: 'common_PasswordErrorLength',
       desc: '',
       args: [],
     );
   }
 
   /// `Passwords do not match`
-  String get common_LoiMKKhac {
+  String get common_PasswordErrorMatch {
     return Intl.message(
       'Passwords do not match',
-      name: 'common_LoiMKKhac',
+      name: 'common_PasswordErrorMatch',
       desc: '',
       args: [],
     );
   }
 
   /// `Delete`
-  String get common_Xoa {
+  String get common_Delete {
     return Intl.message(
       'Delete',
-      name: 'common_Xoa',
+      name: 'common_Delete',
       desc: '',
       args: [],
     );
   }
 
   /// `My Todo List`
-  String get home_TieuDe {
+  String get home_Title {
     return Intl.message(
       'My Todo List',
-      name: 'home_TieuDe',
+      name: 'home_Title',
       desc: '',
       args: [],
     );
   }
 
   /// `Completed`
-  String get home_HoanThanh {
+  String get home_Complete {
     return Intl.message(
       'Completed',
-      name: 'home_HoanThanh',
+      name: 'home_Complete',
       desc: '',
       args: [],
     );
   }
 
   /// `Empty Data`
-  String get home_KhongCoDuLieu {
+  String get home_EmptyData {
     return Intl.message(
       'Empty Data',
-      name: 'home_KhongCoDuLieu',
+      name: 'home_EmptyData',
       desc: '',
       args: [],
     );
   }
 
   /// `Sign In`
-  String get auth_DangNhap {
+  String get auth_SignIn {
     return Intl.message(
       'Sign In',
-      name: 'auth_DangNhap',
+      name: 'auth_SignIn',
       desc: '',
       args: [],
     );
   }
 
   /// `Register`
-  String get auth_DangKy {
+  String get auth_Register {
     return Intl.message(
       'Register',
-      name: 'auth_DangKy',
+      name: 'auth_Register',
       desc: '',
       args: [],
     );
   }
 
   /// `Password`
-  String get auth_MatKhau {
+  String get auth_Password {
     return Intl.message(
       'Password',
-      name: 'auth_MatKhau',
+      name: 'auth_Password',
       desc: '',
       args: [],
     );
   }
 
   /// `Confirm Password`
-  String get auth_XacNhanMK {
+  String get auth_ConfirmPassword {
     return Intl.message(
       'Confirm Password',
-      name: 'auth_XacNhanMK',
+      name: 'auth_ConfirmPassword',
       desc: '',
       args: [],
     );
   }
 
   /// `Successfully create new account`
-  String get auth_ThanhCongTaoTK {
+  String get auth_CreateSuccess {
     return Intl.message(
       'Successfully create new account',
-      name: 'auth_ThanhCongTaoTK',
+      name: 'auth_CreateSuccess',
       desc: '',
       args: [],
     );
   }
 
   /// `Add New Task`
-  String get addTask_ThemViec {
+  String get addTask_AddTask {
     return Intl.message(
       'Add New Task',
-      name: 'addTask_ThemViec',
+      name: 'addTask_AddTask',
       desc: '',
       args: [],
     );
   }
 
   /// `Task Title`
-  String get addTask_TieuDeViec {
+  String get addTask_TaskTitle {
     return Intl.message(
       'Task Title',
-      name: 'addTask_TieuDeViec',
+      name: 'addTask_TaskTitle',
       desc: '',
       args: [],
     );
   }
 
   /// `Category`
-  String get addTask_Loai {
+  String get addTask_Category {
     return Intl.message(
       'Category',
-      name: 'addTask_Loai',
+      name: 'addTask_Category',
       desc: '',
       args: [],
     );
   }
 
   /// `Date`
-  String get addTask_Ngay {
+  String get addTask_Date {
     return Intl.message(
       'Date',
-      name: 'addTask_Ngay',
+      name: 'addTask_Date',
       desc: '',
       args: [],
     );
   }
 
   /// `Time`
-  String get addTask_Gio {
+  String get addTask_Time {
     return Intl.message(
       'Time',
-      name: 'addTask_Gio',
+      name: 'addTask_Time',
       desc: '',
       args: [],
     );
   }
 
   /// `Notes`
-  String get addTask_GhiChu {
+  String get addTask_Notes {
     return Intl.message(
       'Notes',
-      name: 'addTask_GhiChu',
+      name: 'addTask_Notes',
       desc: '',
       args: [],
     );
   }
 
   /// `Save`
-  String get addTask_Luu {
+  String get addTask_Save {
     return Intl.message(
       'Save',
-      name: 'addTask_Luu',
+      name: 'addTask_Save',
       desc: '',
       args: [],
     );
   }
 
   /// `Update`
-  String get addTask_CapNhat {
+  String get addTask_Update {
     return Intl.message(
       'Update',
-      name: 'addTask_CapNhat',
+      name: 'addTask_Update',
       desc: '',
       args: [],
     );

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
-import '../../../../generated/l10n.dart';
-import '../../providers/todo_provider.dart';
-
+import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/project/task/providers/todo_provider.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem({super.key, required this.item});
 
   final TodoModel item;
 
-  bool isCompleted() {
+  bool _isCompleted() {
     return item.isCompleted;
   }
 
@@ -28,7 +28,7 @@ class TodoItem extends StatelessWidget {
               final res = await showDialog(
                 context: context,
                 builder: (context) =>
-                    CommonDialog(type: EnumTypeDialog.warning, title: S.of(context).common_Xoa),
+                    CommonDialog(type: EnumTypeDialog.warning, title: S.of(context).common_Delete),
               );
               if (res == true) {
                 final res = await provider.deleteTodo(item.id);
@@ -43,7 +43,7 @@ class TodoItem extends StatelessWidget {
               child: Row(
                 children: [
                   Opacity(
-                      opacity: isCompleted() ? 0.3 : 1,
+                      opacity: _isCompleted() ? 0.3 : 1,
                       child: Image.asset('assets/images/${item.category}.png', width: 48)),
                   const SizedBox(
                     width: 8,
@@ -57,17 +57,17 @@ class TodoItem extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: ModTextStyle.item1.copyWith(
-                              color: isCompleted() ? ModColorStyle.subTitle : ModColorStyle.title,
-                              decoration: isCompleted() ? TextDecoration.lineThrough : null,
-                              decorationColor: isCompleted() ? ModColorStyle.subTitle : null),
+                              color: _isCompleted() ? ModColorStyle.subTitle : ModColorStyle.title,
+                              decoration: _isCompleted() ? TextDecoration.lineThrough : null,
+                              decorationColor: _isCompleted() ? ModColorStyle.subTitle : null),
                         ),
                         if (item.dueTime != '')
                           Text(
                             item.dueTime ?? '',
                             style: ModTextStyle.item2.copyWith(
                                 color: ModColorStyle.subTitle,
-                                decoration: isCompleted() ? TextDecoration.lineThrough : null,
-                                decorationColor: isCompleted() ? ModColorStyle.subTitle : null),
+                                decoration: _isCompleted() ? TextDecoration.lineThrough : null,
+                                decorationColor: _isCompleted() ? ModColorStyle.subTitle : null),
                           ),
                       ],
                     ),

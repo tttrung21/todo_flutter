@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo_app/components/button.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
@@ -11,9 +11,9 @@ import 'package:todo_app/utils/convert_utils.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
-import '../../../../generated/l10n.dart';
-import '../../../../model/todo_model.dart';
-import '../../providers/todo_provider.dart';
+import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/model/todo_model.dart';
+import 'package:todo_app/project/task/providers/todo_provider.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key, this.item});
@@ -26,50 +26,50 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final _key = GlobalKey<FormState>();
-  TextEditingController titleTEC = TextEditingController();
-  TextEditingController dateTEC = TextEditingController();
-  TextEditingController timeTEC = TextEditingController();
-  TextEditingController notesTEC = TextEditingController();
+  TextEditingController _titleTEC = TextEditingController();
+  TextEditingController _dateTEC = TextEditingController();
+  TextEditingController _timeTEC = TextEditingController();
+  TextEditingController _notesTEC = TextEditingController();
   Category? _category;
   bool _hasInteracted = false;
   bool _isUpdate = false;
-  DateTime? now;
-
-  bool getOpacity(Category cat) {
-    return _category == cat || _category == null;
-  }
-
-  bool isIos() {
-    return Platform.isIOS;
-  }
+  DateTime? _now;
 
   @override
   void initState() {
     super.initState();
     _isUpdate = widget.item != null;
     if (_isUpdate) {
-      titleTEC.text = widget.item?.title ?? '';
-      dateTEC.text = widget.item?.dueDate ?? '';
-      timeTEC.text = widget.item?.dueTime ?? '';
-      notesTEC.text = widget.item?.notes ?? '';
+      _titleTEC.text = widget.item?.title ?? '';
+      _dateTEC.text = widget.item?.dueDate ?? '';
+      _timeTEC.text = widget.item?.dueTime ?? '';
+      _notesTEC.text = widget.item?.notes ?? '';
       _category = Category.values.firstWhere((element) => element.name == widget.item?.category);
     }
   }
 
-  Future<void> getDate(TextEditingController tec) async {
+  bool _getOpacity(Category cat) {
+    return _category == cat || _category == null;
+  }
+
+  bool _isIos() {
+    return Platform.isIOS;
+  }
+
+  Future<void> _getDate(TextEditingController tec) async {
     final res = await showDatePicker(
         context: context,
-        currentDate: now ?? DateTime.now(),
-        initialDate: now ?? DateTime.now(),
+        currentDate: _now ?? DateTime.now(),
+        initialDate: _now ?? DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 2));
     if (res != null) {
-      now = res;
-      tec.text = ConvertUtils.dMy(now);
+      _now = res;
+      tec.text = ConvertUtils.dMy(_now);
     }
   }
 
-  Future<void> getTime(TextEditingController tec) async {
+  Future<void> _getTime(TextEditingController tec) async {
     final res =
         await showTimePicker(context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
     if (res != null) {
@@ -79,201 +79,227 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
-    final width = mq.size.width;
-    final height = mq.size.height;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: ModColorStyle.background,
-        appBar: AppBar(
-          toolbarHeight: 86,
-          backgroundColor: ModColorStyle.primary,
-          leading: const SizedBox(),
-          leadingWidth: 0,
-          bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(0),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 20, top: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: Image.asset(
-                          'assets/images/back.png',
-                          width: 48,
-                        )),
-                    Text(
-                      S.of(context).addTask_ThemViec,
-                      style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-                    ),
-                    const SizedBox(
-                      height: 48,
-                      width: 48,
-                    )
-                  ],
-                ),
-              )),
-        ),
-        body: Form(
-            key: _key,
-            autovalidateMode:
-                _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-            child: SingleChildScrollView(
-              padding: (isIos() && width > height)
-                  ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
-                  : const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  GetLabel(label: S.of(context).addTask_TieuDeViec),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  normalTextFormField(
-                    S.of(context).addTask_TieuDeViec,
-                    titleTEC,
-                    validator: (value) {
-                      if (value!.isEmpty && _hasInteracted) {
-                        return S.of(context).common_LoiThongTinTrong;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    children: [
-                      GetLabel(label: S.of(context).addTask_Loai),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      for (int i = 0; i < Category.values.length; i++)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: InkWell(
-                            onTap: () {
-                              if (_category == null || _category != Category.values[i]) {
-                                _category = Category.values[i];
-                              } else {
-                                _category = null;
-                              }
-                              setState(() {});
-                            },
-                            child: Opacity(
-                                opacity: getOpacity(Category.values[i]) ? 1 : 0.3,
-                                child: Image.asset('assets/images/${Category.values[i].name}.png')),
-                          ),
-                        )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GetLabel(label: S.of(context).addTask_Ngay),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            normalTextFormField(
-                              S.of(context).addTask_Ngay,
-                              dateTEC,
-                              readOnly: true,
-                              image: Image.asset('assets/images/calendar.png'),
-                              onTap: () {
-                                getDate(dateTEC);
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty && _hasInteracted) {
-                                  return S.of(context).common_LoiThongTinTrong;
-                                }
-                                return null;
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GetLabel(label: S.of(context).addTask_Gio),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            normalTextFormField(S.of(context).addTask_Gio, timeTEC,
-                                readOnly: true,
-                                image: Image.asset('assets/images/clock.png'), onTap: () {
-                              getTime(timeTEC);
-                            })
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  GetLabel(label: S.of(context).addTask_GhiChu),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  normalTextFormField(S.of(context).addTask_Gio, notesTEC, maxLine: 6)
-                ],
-              ),
-            )),
+        appBar: _buildAppBar,
+        body: _buildBody,
         bottomNavigationBar: BottomAppBar(
-          color: ModColorStyle.background,
-          child: CupertinoButton(
-            borderRadius: BorderRadius.circular(50),
-            padding: EdgeInsets.zero,
-            disabledColor: ModColorStyle.disable,
-            color: ModColorStyle.primary,
-            onPressed: _category == null
-                ? null
-                : () {
-                    if (!_hasInteracted) {
-                      _hasInteracted = true;
-                      setState(() {});
-                    }
-                    if (_key.currentState!.validate()) {
-                      onButtonPress(context);
-                    }
-                  },
-            child: Text(
-              _isUpdate ? S.of(context).addTask_CapNhat : S.of(context).addTask_Luu,
-              style: ModTextStyle.button1.copyWith(),
-            ),
-          ),
-        ),
+            color: ModColorStyle.background,
+            child: normalCupertinoButton(
+                onPress: _category == null
+                    ? null
+                    : () {
+                        if (!_hasInteracted) {
+                          _hasInteracted = true;
+                          setState(() {});
+                        }
+                        if (_key.currentState!.validate()) {
+                          onButtonPress(context);
+                        }
+                      },
+                title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save)),
       ),
     );
   }
 
+  ///Widgets
+  AppBar get _buildAppBar {
+    return AppBar(
+      toolbarHeight: 86,
+      backgroundColor: ModColorStyle.primary,
+      leading: const SizedBox(),
+      leadingWidth: 0,
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 20, top: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Image.asset(
+                      'assets/images/back.png',
+                      width: 48,
+                    )),
+                Text(
+                  S.of(context).addTask_AddTask,
+                  style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                ),
+                const SizedBox(
+                  height: 48,
+                  width: 48,
+                )
+              ],
+            ),
+          )),
+    );
+  }
+
+  Widget get _buildBody {
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width;
+    final height = mq.size.height;
+    return Form(
+        key: _key,
+        autovalidateMode:
+            _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+        child: SingleChildScrollView(
+          padding: (_isIos() && width > height)
+              ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+              : const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 8,
+              ),
+              _buildTaskTitle,
+              const SizedBox(
+                height: 24,
+              ),
+              _buildCategory,
+              const SizedBox(
+                height: 24,
+              ),
+              _buildDateAndTime,
+              const SizedBox(
+                height: 24,
+              ),
+              _buildNotes
+            ],
+          ),
+        ));
+  }
+
+  Widget get _buildTaskTitle {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GetLabel(label: S.of(context).addTask_TaskTitle),
+        const SizedBox(
+          height: 4,
+        ),
+        normalTextFormField(
+          S.of(context).addTask_TaskTitle,
+          _titleTEC,
+          validator: (value) {
+            if (value!.isEmpty && _hasInteracted) {
+              return S.of(context).common_EmptyField;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget get _buildDateAndTime {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GetLabel(label: S.of(context).addTask_Date),
+              const SizedBox(
+                height: 4,
+              ),
+              normalTextFormField(
+                S.of(context).addTask_Date,
+                _dateTEC,
+                readOnly: true,
+                image: Image.asset('assets/images/calendar.png'),
+                onTap: () {
+                  _getDate(_dateTEC);
+                },
+                validator: (value) {
+                  if (value!.isEmpty && _hasInteracted) {
+                    return S.of(context).common_EmptyField;
+                  }
+                  return null;
+                },
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GetLabel(label: S.of(context).addTask_Time),
+              const SizedBox(
+                height: 4,
+              ),
+              normalTextFormField(S.of(context).addTask_Time, _timeTEC,
+                  readOnly: true, image: Image.asset('assets/images/clock.png'), onTap: () {
+                _getTime(_timeTEC);
+              })
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget get _buildCategory {
+    return Row(
+      children: [
+        GetLabel(label: S.of(context).addTask_Category),
+        const SizedBox(
+          width: 16,
+        ),
+        for (int i = 0; i < Category.values.length; i++)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: InkWell(
+              onTap: () {
+                if (_category == null || _category != Category.values[i]) {
+                  _category = Category.values[i];
+                } else {
+                  _category = null;
+                }
+                setState(() {});
+              },
+              child: Opacity(
+                  opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
+                  child: Image.asset('assets/images/${Category.values[i].name}.png')),
+            ),
+          )
+      ],
+    );
+  }
+
+  Widget get _buildNotes {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GetLabel(label: S.of(context).addTask_Notes),
+        const SizedBox(
+          height: 4,
+        ),
+        normalTextFormField(S.of(context).addTask_Notes, _notesTEC, maxLine: 6)
+      ],
+    );
+  }
+
+  ///Function
   Future<void> onButtonPress(BuildContext context) async {
     ShowLoading.loadingDialog(context);
     final provider = Provider.of<TodoProvider>(context, listen: false);
     final todo = TodoModel(
         id: _isUpdate ? widget.item?.id : null,
-        title: titleTEC.text,
+        title: _titleTEC.text,
         category: _category!.name,
-        dueDate: dateTEC.text,
-        dueTime: timeTEC.text,
-        notes: notesTEC.text,
+        dueDate: _dateTEC.text,
+        dueTime: _timeTEC.text,
+        notes: _notesTEC.text,
         userId: Supabase.instance.client.auth.currentUser!.id);
     final res = _isUpdate ? await provider.updateTodo(todo) : await provider.addTodo(todo);
     if (context.mounted) {
@@ -283,14 +309,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         showDialog(
           context: context,
           builder: (context) =>
-              CommonDialog(type: EnumTypeDialog.success, title: S.of(context).common_ThanhCong),
+              CommonDialog(type: EnumTypeDialog.success, title: S.of(context).common_Success),
         );
       } else {
         showDialog(
           context: context,
           builder: (context) => CommonDialog(
             type: EnumTypeDialog.error,
-            title: S.of(context).common_LoiXayRa,
+            title: S.of(context).common_Error,
             subtitle: provider.errorMessage,
           ),
         );
