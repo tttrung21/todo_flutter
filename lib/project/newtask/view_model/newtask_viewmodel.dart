@@ -7,7 +7,6 @@ class NewTaskViewModel with ChangeNotifier {
   final _todoService = TodoService();
   String errorMessage = '';
 
-
   Future<TodoModel?> addTodo(TodoModel todo) async {
     errorMessage = '';
     try {

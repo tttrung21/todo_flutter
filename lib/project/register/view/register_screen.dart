@@ -3,27 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/project/auth/login/view_model/login_viewmodel.dart';
-import 'package:todo_app/project/auth/register/view/register_screen.dart';
-import 'package:todo_app/project/task/home/view/home_screen.dart';
+import 'package:todo_app/project/register/view_model/register_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 import 'package:todo_app/utils/validate.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _key = GlobalKey<FormState>();
 
   final _emailTEC = TextEditingController();
   final _passwordTEC = TextEditingController();
+  final _confirmTEC = TextEditingController();
   bool _hasInteracted = false;
 
   @override
@@ -31,13 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailTEC.dispose();
     _passwordTEC.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _emailTEC.text = 'trung@test.com';
-    _passwordTEC.text = 'password';
+    _confirmTEC.dispose();
   }
 
   @override
@@ -56,7 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
   AppBar get _buildAppBar {
     return AppBar(
       backgroundColor: ModColorStyle.primary,
-      leading: const SizedBox(),
+      leading: IconButton(
+        onPressed: () => Navigator.pop(context),
+        icon: const Icon(CupertinoIcons.back, size: 24, color: ModColorStyle.white),
+      ),
     );
   }
 
@@ -100,7 +96,21 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 8,
               ),
-              _buildButtons
+              normalTextFormField(
+                S.of(context).auth_ConfirmPassword,
+                _confirmTEC,
+                isObscure: true,
+                validator: (value) {
+                  if (_hasInteracted) {
+                    return CommonValidate.validateConfirm(value, _passwordTEC.text, context);
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              _buildRegisterButton
             ],
           ),
         ),
@@ -108,38 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget get _buildButtons {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildRegisterButton,
-        _buildLoginButton,
-        const SizedBox(
-          width: 80,
-        ),
-      ],
-    );
-  }
-
   Widget get _buildRegisterButton {
-    return TextButton(
-        onPressed: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-          _hasInteracted = false;
-          _key.currentState?.reset();
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
-          _emailTEC.clear();
-          _passwordTEC.clear();
-
-        },
-        child: Text(
-          S.of(context).auth_Register,
-          style: ModTextStyle.label.copyWith(color: ModColorStyle.primary),
-        ));
-  }
-
-  Widget get _buildLoginButton {
     return CupertinoButton(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         color: ModColorStyle.primary,
@@ -151,26 +130,32 @@ class _LoginScreenState extends State<LoginScreen> {
             });
           }
           if (_key.currentState!.validate()) {
-            onLogin(context);
+            onRegister(context);
           }
         },
         child: Text(
-          S.of(context).auth_SignIn,
+          S.of(context).auth_Register,
           style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
         ));
   }
 
   ///Function
-  Future<void> onLogin(BuildContext context) async {
-    final provider = Provider.of<LoginViewModel>(context, listen: false);
+  Future<void> onRegister(BuildContext context) async {
+    final provider = Provider.of<RegisterViewModel>(context, listen: false);
     ShowLoading.loadingDialog(context);
-    final res = await provider.signIn(_emailTEC.text, _passwordTEC.text);
+    final res = await provider.signUp(_emailTEC.text, _passwordTEC.text);
     if (context.mounted) {
       Navigator.pop(context);
       if (res) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ));
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+            type: EnumTypeDialog.success,
+            title: S.of(context).common_Success,
+            subtitle: S.of(context).auth_CreateSuccess,
+          ),
+        );
       } else {
         showDialog(
           context: context,

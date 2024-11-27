@@ -62,7 +62,7 @@ class HomeViewModel with ChangeNotifier {
     try {
       ///update on local
       final todoIndex = _todos.indexWhere((todo) => todo.id == item.id);
-      if (todoIndex == -1) throw Exception('Invalid');
+      if (todoIndex == -1) return;
       _todos[todoIndex] = item;
       notifyListeners();
     } catch (e) {
@@ -74,8 +74,7 @@ class HomeViewModel with ChangeNotifier {
 
   Future<void> toggleComplete(int? id) async {
     errorMessage = '';
-    _isLoading = true;
-    notifyListeners();
+    _setLoadingTrue();
     try {
       ///update on supabase
       final todo = getTodo(id);
@@ -92,18 +91,14 @@ class HomeViewModel with ChangeNotifier {
       errorMessage = e.toString();
       rethrow;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingFalse();
     }
   }
 
   Future<bool> deleteTodo(int? id) async {
     errorMessage = '';
-    _isLoading = true;
-    notifyListeners();
+    _setLoadingTrue();
     try {
-      print(id);
-
       ///delete on supabase
       await _todoService.deleteTodo(id!);
 
@@ -115,8 +110,7 @@ class HomeViewModel with ChangeNotifier {
       print(errorMessage);
       return false;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingFalse();
     }
   }
 

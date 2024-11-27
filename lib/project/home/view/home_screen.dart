@@ -7,16 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/components/button.dart';
 import 'package:todo_app/model/todo_model.dart';
 
-// import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/task/home/view/list_todo.dart';
-import 'package:todo_app/project/task/home/view_model/home_viewmodel.dart';
-import 'package:todo_app/project/task/newtask/view/addtask_screen.dart';
+import 'package:todo_app/project/home/view/list_todo.dart';
+import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
+import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/project/auth/login/view/login_screen.dart';
-// import 'package:todo_app/project/task/providers/todo_provider.dart';
+import 'package:todo_app/project/login/view/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

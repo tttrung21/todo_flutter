@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/components/button.dart';
 import 'package:todo_app/components/text_field.dart';
-import 'package:todo_app/project/task/newtask/view_model/newtask_viewmodel.dart';
+import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/convert_utils.dart';

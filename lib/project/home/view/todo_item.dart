@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:todo_app/model/todo_model.dart';
-import 'package:todo_app/project/task/home/view_model/home_viewmodel.dart';
+import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/show_dialog.dart';
