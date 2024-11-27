@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/project/auth/login/view/login_screen.dart';
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
@@ -148,9 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (context.mounted) {
       Navigator.pop(context);
       if (res) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ));
+        Navigator.of(context).pop();
         showDialog(
           context: context,
           builder: (context) => CommonDialog(

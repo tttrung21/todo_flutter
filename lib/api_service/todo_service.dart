@@ -9,8 +9,9 @@ class TodoService {
     return res;
   }
 
-  Future<void> createTodo(TodoModel todo) async {
-    await client.from('Todo').insert(todo.toJson());
+  Future<Map<String, dynamic>> createTodo(TodoModel todo) async {
+    final res = await client.from('Todo').insert(todo.toJson()).select();
+    return res.first;
   }
 
   Future<void> toggleComplete(int id, bool isCompleted) async {

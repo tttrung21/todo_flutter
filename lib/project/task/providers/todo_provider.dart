@@ -45,8 +45,8 @@ class TodoProvider with ChangeNotifier {
   Future<bool> addTodo(TodoModel todo) async {
     errorMessage = '';
     try {
-      await todoService.createTodo(todo);
-      _todos.add(todo);
+      final res = await todoService.createTodo(todo);
+      _todos.add(TodoModel.fromJson(res));
       notifyListeners();
       return true;
     } catch (e) {
@@ -101,6 +101,7 @@ class TodoProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
+      print(id);
       ///delete on supabase
       await todoService.deleteTodo(id!);
 
@@ -109,6 +110,7 @@ class TodoProvider with ChangeNotifier {
       return true;
     } catch (e) {
       errorMessage = e.toString();
+      print(errorMessage);
       return false;
     } finally {
       _isLoading = false;

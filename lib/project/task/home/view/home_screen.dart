@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/button.dart';
-import 'package:todo_app/model/todo_model.dart';
 
 import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/task/home/view/todo_item.dart';
+import 'package:todo_app/project/task/home/view/list_todo.dart';
 import 'package:todo_app/project/task/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
@@ -133,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildListItem(height, provider.todoList, false),
+                  ListTodo(height: height, listItem: provider.todoList, isCompleteList: false),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Align(
@@ -144,38 +143,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  _buildListItem(height, provider.completedList, true),
+                  ListTodo(height: height, listItem: provider.completedList, isCompleteList: true),
                 ],
               );
             }, childCount: 1)),
           ],
         ));
-  }
-
-  Widget _buildListItem(double height, List<TodoModel> listItem, bool isCompleteList) {
-    return Flexible(
-      child: Container(
-        height: height / 3.5,
-        decoration:
-            BoxDecoration(color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            final item = listItem[index];
-            return isCompleteList
-                ? TodoItem(item: item)
-                : InkWell(
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
-                    },
-                    child: TodoItem(item: item));
-          },
-          itemCount: listItem.length,
-          separatorBuilder: (context, index) =>
-              const Divider(color: ModColorStyle.disable, thickness: 0.1),
-        ),
-      ),
-    );
   }
 
   ///Function
