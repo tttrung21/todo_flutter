@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/button.dart';
+import 'package:todo_app/model/todo_model.dart';
 
-import 'package:todo_app/project/auth/provider/auth_provider.dart';
+// import 'package:todo_app/project/auth/provider/auth_provider.dart';
 import 'package:todo_app/localization/language_provider.dart';
 import 'package:todo_app/project/task/home/view/list_todo.dart';
+import 'package:todo_app/project/task/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/task/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/auth/login/view/login_screen.dart';
-import 'package:todo_app/project/task/providers/todo_provider.dart';
+// import 'package:todo_app/project/task/providers/todo_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        Provider.of<TodoProvider>(context, listen: false).fetchTodos();
+        Provider.of<HomeViewModel>(context, listen: false).fetchTodos();
       },
     );
   }
@@ -48,11 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
+    final provider = Provider.of<HomeViewModel>(context);
 
     return Scaffold(
       backgroundColor: ModColorStyle.background,
-      appBar: _buildAppBarWidget,
+      appBar: _buildAppBarWidget(provider),
       body: Stack(
         children: [
           const SizedBox(
@@ -68,18 +70,21 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomAppBar(
           color: ModColorStyle.background,
           child: normalCupertinoButton(
-              onPress: () {
+              onPress: () async {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) => const AddTaskScreen(),
                 // ));
-                Navigator.of(context).push(_createRouteAddTask());
+                final res = await Navigator.of(context).push(_createRouteAddTask());
+                if (res is TodoModel) {
+                  provider.addTodo(res);
+                }
               },
               title: S.of(context).addTask_AddTask)),
     );
   }
 
   ///Widgets
-  AppBar get _buildAppBarWidget {
+  AppBar _buildAppBarWidget(HomeViewModel provider) {
     final langProvider = Provider.of<LanguageProvider>(context);
 
     final locale = langProvider.locale.toString();
@@ -99,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(right: 16.0),
           child: InkWell(
             onTap: () {
-              onLogout(context);
+              onLogout(context, provider);
             },
             child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
           ),
@@ -115,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBody(TodoProvider provider) {
+  Widget _buildBody(HomeViewModel provider) {
     final mq = MediaQuery.of(context);
     final width = mq.size.width;
     final height = mq.size.height;
@@ -132,7 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ListTodo(height: height, listItem: provider.todoList, isCompleteList: false),
+                  ListTodo(
+                    height: height,
+                    listItem: provider.todoList,
+                    isCompleteList: false,
+                    provider: provider,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Align(
@@ -152,9 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ///Function
-  void onLogout(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    authProvider.logout();
+  void onLogout(BuildContext context, HomeViewModel provider) {
+    provider.logout();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => const LoginScreen(),
     ));

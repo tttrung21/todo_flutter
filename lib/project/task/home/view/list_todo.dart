@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/project/task/home/view/todo_item.dart';
+import 'package:todo_app/project/task/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/task/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 
 class ListTodo extends StatelessWidget {
   const ListTodo(
-      {super.key, required this.height, required this.listItem, required this.isCompleteList});
+      {super.key,
+      required this.height,
+      required this.listItem,
+      required this.isCompleteList, this.provider});
 
   final double height;
   final List<TodoModel> listItem;
   final bool isCompleteList;
+  final HomeViewModel? provider;
+  // final void Function()? callbackUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +31,12 @@ class ListTodo extends StatelessWidget {
             return isCompleteList
                 ? TodoItem(item: item)
                 : InkWell(
-                    onTap: () {
-                      Navigator.of(context)
+                    onTap: () async {
+                      final res = await Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
+                      if (res is TodoModel) {
+                        provider?.updateTodo(res);
+                      }
                     },
                     child: TodoItem(item: item));
           },

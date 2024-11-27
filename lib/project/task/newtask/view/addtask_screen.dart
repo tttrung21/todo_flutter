@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/components/button.dart';
 import 'package:todo_app/components/text_field.dart';
+import 'package:todo_app/project/task/newtask/view_model/newtask_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/convert_utils.dart';
@@ -13,7 +14,6 @@ import 'package:todo_app/utils/show_dialog.dart';
 
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/model/todo_model.dart';
-import 'package:todo_app/project/task/providers/todo_provider.dart';
 import 'package:todo_app/utils/validate.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -293,7 +293,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   ///Function
   Future<void> onButtonPress(BuildContext context) async {
     ShowLoading.loadingDialog(context);
-    final provider = Provider.of<TodoProvider>(context, listen: false);
+    final provider = Provider.of<NewTaskViewModel>(context, listen: false);
     final todo = TodoModel(
         id: _isUpdate ? widget.item?.id : null,
         title: _titleTEC.text,
@@ -305,8 +305,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final res = _isUpdate ? await provider.updateTodo(todo) : await provider.addTodo(todo);
     if (context.mounted) {
       Navigator.pop(context);
-      if (res) {
-        Navigator.pop(context);
+      if (res is TodoModel) {
+        Navigator.of(context).pop(res);
         showDialog(
           context: context,
           builder: (context) =>

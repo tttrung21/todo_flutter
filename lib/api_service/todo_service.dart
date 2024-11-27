@@ -29,11 +29,14 @@ class TodoService {
         .eq('id', id)
         .eq('user_id', client.auth.currentUser?.id ?? '');
   }
-  Future<void> updateTodo(TodoModel todo) async {
-    await client
+
+  Future<Map<String, dynamic>> updateTodo(TodoModel todo) async {
+    final res = await client
         .from('Todo')
         .update(todo.toJsonUpdate())
         .eq('id', todo.id!)
-        .eq('user_id', client.auth.currentUser?.id ?? '');
+        .eq('user_id', client.auth.currentUser?.id ?? '')
+        .select();
+    return res.first;
   }
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/api_service/todo_service.dart';
+import 'package:todo_app/api_service/user_service.dart';
 import 'package:todo_app/model/todo_model.dart';
 
-
-class TodoProvider with ChangeNotifier {
+class HomeViewModel with ChangeNotifier {
   List<TodoModel> _todos = [];
   bool _isLoading = false;
-  final todoService = TodoService();
+  final _todoService = TodoService();
+  final _userService = UserService();
   String errorMessage = '';
 
   List<TodoModel> get todos => _todos;
@@ -22,36 +23,52 @@ class TodoProvider with ChangeNotifier {
   }
 
   Future<void> fetchTodos() async {
-    _isLoading = true;
     errorMessage = '';
-    notifyListeners();
+    _setLoadingTrue();
     try {
-      final response = await todoService.fetchTodos();
+      final response = await _todoService.fetchTodos();
       if (response.isNotEmpty) {
         _todos = TodoModel.fromJsonToList(response);
-        _todos.sort((a, b) {
-          return a.id!.compareTo(b.id!);
-        },);
+        _todos.sort(
+          (a, b) {
+            return a.id!.compareTo(b.id!);
+          },
+        );
       }
     } catch (e) {
       errorMessage = e.toString();
       throw Exception(e);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingFalse();
     }
   }
 
-  Future<bool> addTodo(TodoModel todo) async {
+  void addTodo(TodoModel todo) {
     errorMessage = '';
+    _setLoadingTrue();
     try {
-      final res = await todoService.createTodo(todo);
-      _todos.add(TodoModel.fromJson(res));
-      notifyListeners();
-      return true;
+      ///update on local
+      _todos.add(todo);
     } catch (e) {
       errorMessage = e.toString();
-      return false;
+    } finally {
+      _setLoadingFalse();
+    }
+  }
+
+  void updateTodo(TodoModel item) {
+    errorMessage = '';
+    _setLoadingTrue();
+    try {
+      ///update on local
+      final todoIndex = _todos.indexWhere((todo) => todo.id == item.id);
+      if (todoIndex == -1) throw Exception('Invalid');
+      _todos[todoIndex] = item;
+      notifyListeners();
+    } catch (e) {
+      errorMessage = e.toString();
+    }finally{
+      _setLoadingFalse();
     }
   }
 
@@ -62,7 +79,7 @@ class TodoProvider with ChangeNotifier {
     try {
       ///update on supabase
       final todo = getTodo(id);
-      await todoService.toggleComplete(id!, !todo.isCompleted);
+      await _todoService.toggleComplete(id!, !todo.isCompleted);
 
       ///update on local
       final todoIndex = _todos.indexWhere((todo) => todo.id == id);
@@ -79,31 +96,16 @@ class TodoProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  Future<bool> updateTodo(TodoModel item) async {
-    errorMessage = '';
-    try {
-      ///update on supabase
-      await todoService.updateTodo(item);
 
-      ///update on local
-      final todoIndex = _todos.indexWhere((todo) => todo.id == item.id);
-      if (todoIndex == -1) return false;
-      _todos[todoIndex] = item;
-      notifyListeners();
-      return true;
-    } catch (e) {
-      errorMessage = e.toString();
-      return false;
-    }
-  }
   Future<bool> deleteTodo(int? id) async {
     errorMessage = '';
     _isLoading = true;
     notifyListeners();
     try {
       print(id);
+
       ///delete on supabase
-      await todoService.deleteTodo(id!);
+      await _todoService.deleteTodo(id!);
 
       ///delete on local
       _todos.removeWhere((element) => element.id == id);
@@ -116,5 +118,19 @@ class TodoProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void logout() async {
+    await _userService.logout();
+  }
+
+  void _setLoadingTrue() {
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  void _setLoadingFalse() {
+    _isLoading = false;
+    notifyListeners();
   }
 }

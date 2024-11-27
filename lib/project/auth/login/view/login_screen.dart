@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/project/auth/provider/auth_provider.dart';
+import 'package:todo_app/project/auth/login/view_model/login_viewmodel.dart';
 import 'package:todo_app/project/auth/register/view/register_screen.dart';
 import 'package:todo_app/project/task/home/view/home_screen.dart';
 import 'package:todo_app/style/color_style.dart';
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   ///Function
   Future<void> onLogin(BuildContext context) async {
-    final provider = Provider.of<AuthProvider>(context, listen: false);
+    final provider = Provider.of<LoginViewModel>(context, listen: false);
     ShowLoading.loadingDialog(context);
     final res = await provider.signIn(_emailTEC.text, _passwordTEC.text);
     if (context.mounted) {
