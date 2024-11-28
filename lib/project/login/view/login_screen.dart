@@ -42,12 +42,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: ModColorStyle.primary,
-        appBar: _buildAppBar,
-        body: _buildBody,
+    return ChangeNotifierProvider(
+      create: (context) => LoginViewModel(),
+      builder: (context, child) => GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: ModColorStyle.primary,
+          appBar: _buildAppBar,
+          body: _buildBody(context),
+        ),
       ),
     );
   }
@@ -60,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget get _buildBody {
+  Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -100,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 8,
               ),
-              _buildButtons
+              _buildButtons(context)
             ],
           ),
         ),
@@ -108,12 +111,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget get _buildButtons {
+  Widget _buildButtons(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildRegisterButton,
-        _buildLoginButton,
+        _buildRegisterButton(context),
+        _buildLoginButton(context),
         const SizedBox(
           width: 80,
         ),
@@ -121,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget get _buildRegisterButton {
+  Widget _buildRegisterButton(BuildContext context) {
     return TextButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
@@ -131,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
               .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
           _emailTEC.clear();
           _passwordTEC.clear();
-
         },
         child: Text(
           S.of(context).auth_Register,
@@ -139,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  Widget get _buildLoginButton {
+  Widget _buildLoginButton(BuildContext context) {
     return CupertinoButton(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         color: ModColorStyle.primary,

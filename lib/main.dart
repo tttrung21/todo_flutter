@@ -3,9 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
-import 'package:todo_app/project/login/view_model/login_viewmodel.dart';
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/register/view_model/register_viewmodel.dart';
 import 'package:todo_app/project/home/view/home_screen.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
@@ -21,8 +19,8 @@ void main() async {
     anonKey: Configs.apiKey,
   );
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => LoginViewModel()),
-    ChangeNotifierProvider(create: (context) => RegisterViewModel()),
+    // ChangeNotifierProvider(create: (context) => LoginViewModel()),
+    // ChangeNotifierProvider(create: (context) => RegisterViewModel()),
     ChangeNotifierProvider(create: (context) => HomeViewModel()),
     ChangeNotifierProvider(create: (context) => NewTaskViewModel()),
     ChangeNotifierProvider(create: (context) => LanguageProvider()..loadLanguage())

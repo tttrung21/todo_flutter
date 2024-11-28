@@ -35,18 +35,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: ModColorStyle.primary,
-        appBar: _buildAppBar,
-        body: _buildBody,
+    return ChangeNotifierProvider(
+      create: (context) => RegisterViewModel(),
+      builder: (context, child) =>  GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: ModColorStyle.primary,
+          appBar: _buildAppBar(context),
+          body: _buildBody(context),
+        ),
       ),
     );
   }
 
   ///Widget
-  AppBar get _buildAppBar {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: ModColorStyle.primary,
       leading: IconButton(
@@ -56,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget get _buildBody {
+  Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -110,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(
                 height: 8,
               ),
-              _buildRegisterButton
+              _buildRegisterButton(context)
             ],
           ),
         ),
@@ -118,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget get _buildRegisterButton {
+  Widget _buildRegisterButton(BuildContext context) {
     return CupertinoButton(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         color: ModColorStyle.primary,
