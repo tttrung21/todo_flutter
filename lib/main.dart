@@ -19,8 +19,6 @@ void main() async {
     anonKey: Configs.apiKey,
   );
   runApp(MultiProvider(providers: [
-    // ChangeNotifierProvider(create: (context) => LoginViewModel()),
-    // ChangeNotifierProvider(create: (context) => RegisterViewModel()),
     ChangeNotifierProvider(create: (context) => HomeViewModel()),
     ChangeNotifierProvider(create: (context) => NewTaskViewModel()),
     ChangeNotifierProvider(create: (context) => LanguageProvider()..loadLanguage())

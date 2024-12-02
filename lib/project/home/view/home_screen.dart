@@ -58,20 +58,24 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
               height: 80, width: double.infinity, child: ColoredBox(color: ModColorStyle.primary)),
           _buildBody(provider),
-          if (provider.isLoading)
-            const Center(
-                child: CircularProgressIndicator(
-              color: ModColorStyle.primary,
-            ))
+          Selector<HomeViewModel, bool>(
+            builder: (context, value, child) {
+              if (value) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: ModColorStyle.primary,
+                ));
+              }
+              return SizedBox.shrink();
+            },
+            selector: (context, vm) => vm.isLoading,
+          )
         ],
       ),
       bottomNavigationBar: BottomAppBar(
           color: ModColorStyle.background,
           child: normalCupertinoButton(
               onPress: () async {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (context) => const AddTaskScreen(),
-                // ));
                 final res = await Navigator.of(context).push(_createRouteAddTask());
                 if (res is TodoModel) {
                   provider.addTodo(res);
@@ -83,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ///Widgets
   AppBar _buildAppBarWidget(HomeViewModel provider) {
-    final langProvider = Provider.of<LanguageProvider>(context);
+    final langProvider = Provider.of<LanguageProvider>(context, listen: false);
 
     final locale = langProvider.locale.toString();
     final date = _formatDate(DateTime.now(), locale);
@@ -139,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: height,
                     listItem: provider.todoList,
                     isCompleteList: false,
-                    provider: provider,
+                    updateFunc: provider.updateTodo,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
