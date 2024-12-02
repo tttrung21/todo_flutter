@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo_app/project/login/view/login_screen.dart';
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/home/view/home_screen.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
+import 'package:todo_app/project/splash/splash_screen.dart';
 import 'package:todo_app/shared/configs.dart';
 
 import 'generated/l10n.dart';
@@ -28,8 +27,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final client = Supabase.instance.client.auth;
-
   @override
   Widget build(BuildContext context) {
     final langProvider = Provider.of<LanguageProvider>(context);
@@ -49,8 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: client.currentSession == null ? const LoginScreen() : const HomeScreen()
-
+      home: SplashScreen(),
     );
   }
 }
