@@ -3,8 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
-import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
 import 'package:todo_app/project/splash/splash_screen.dart';
 import 'package:todo_app/shared/configs.dart';
 
