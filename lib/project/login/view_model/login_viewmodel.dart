@@ -7,7 +7,6 @@ class LoginViewModel with ChangeNotifier {
   String? errorMessage;
 
   Future<bool> signIn(String email, String password) async {
-    print('sign in $email');
     errorMessage = '';
     try {
       await _userService.login(email: email, password: password);

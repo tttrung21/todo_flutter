@@ -9,6 +9,7 @@ import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/convert_utils.dart';
+import 'package:todo_app/utils/device_info.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 
@@ -82,7 +83,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => NewTaskViewModel(),
-      builder: (context, child) =>  GestureDetector(
+      builder: (context, child) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           backgroundColor: ModColorStyle.background,
@@ -298,13 +299,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     ShowLoading.loadingDialog(context);
     final provider = context.read<NewTaskViewModel>();
     final todo = TodoModel(
-        id: _isUpdate ? widget.item?.id : null, ///Id is auto incremented in db
+
+        ///Id is auto incremented in db
+        id: _isUpdate ? widget.item?.id : null,
         title: _titleTEC.text,
         category: _category!.name,
         dueDate: _dateTEC.text,
         dueTime: _timeTEC.text,
         notes: _notesTEC.text,
-        userId: Supabase.instance.client.auth.currentUser!.id);
+        userId: Supabase.instance.client.auth.currentUser!.id,
+        deviceId: widget.item?.deviceId ?? DeviceInfo().deviceId);
     final res = _isUpdate ? await provider.updateTodo(todo) : await provider.addTodo(todo);
     if (context.mounted) {
       Navigator.pop(context);

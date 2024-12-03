@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
 
   ///Widgets
   AppBar _buildAppBarWidget(BuildContext context) {
-    final langProvider = Provider.of<LanguageProvider>(context, listen: false);
+    final langProvider = context.read<LanguageProvider>();
 
     final locale = langProvider.locale.toString();
     final date = _formatDate(DateTime.now(), locale);

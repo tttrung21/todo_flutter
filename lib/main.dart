@@ -5,12 +5,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/localization/language_provider.dart';
 import 'package:todo_app/project/splash/splash_screen.dart';
 import 'package:todo_app/shared/configs.dart';
+import 'package:todo_app/utils/device_info.dart';
 
 import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await DeviceInfo().getDeviceID();
   await Supabase.initialize(
     url: Configs.apiBaseUrl,
     anonKey: Configs.apiKey,
