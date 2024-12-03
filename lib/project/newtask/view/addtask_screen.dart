@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo_app/components/button.dart';
+import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/project/newtask/view_model/newtask_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
@@ -80,27 +80,30 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: ModColorStyle.background,
-        appBar: _buildAppBar,
-        body: _buildBody,
-        bottomNavigationBar: BottomAppBar(
-            color: ModColorStyle.background,
-            child: normalCupertinoButton(
-                onPress: _category == null
-                    ? null
-                    : () {
-                        if (!_hasInteracted) {
-                          _hasInteracted = true;
-                          setState(() {});
-                        }
-                        if (_key.currentState!.validate()) {
-                          onButtonPress(context);
-                        }
-                      },
-                title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save)),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => NewTaskViewModel(),
+      builder: (context, child) =>  GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: ModColorStyle.background,
+          appBar: _buildAppBar,
+          body: _buildBody,
+          bottomNavigationBar: BottomAppBar(
+              color: ModColorStyle.background,
+              child: normalCupertinoButton(
+                  onPress: _category == null
+                      ? null
+                      : () {
+                          if (!_hasInteracted) {
+                            _hasInteracted = true;
+                            setState(() {});
+                          }
+                          if (_key.currentState!.validate()) {
+                            onButtonPress(context);
+                          }
+                        },
+                  title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save)),
+        ),
       ),
     );
   }
@@ -188,7 +191,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           _titleTEC,
           validator: (value) {
             if (_hasInteracted) {
-              return CommonValidate.validateEmpty(value,context);
+              return CommonValidate.validateEmpty(value, context);
             }
             return null;
           },
@@ -219,7 +222,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 },
                 validator: (value) {
                   if (_hasInteracted) {
-                    return CommonValidate.validateEmpty(value,context);
+                    return CommonValidate.validateEmpty(value, context);
                   }
                   return null;
                 },
@@ -293,9 +296,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   ///Function
   Future<void> onButtonPress(BuildContext context) async {
     ShowLoading.loadingDialog(context);
-    final provider = Provider.of<NewTaskViewModel>(context, listen: false);
+    final provider = context.read<NewTaskViewModel>();
     final todo = TodoModel(
-        id: _isUpdate ? widget.item?.id : null,
+        id: _isUpdate ? widget.item?.id : null, ///Id is auto incremented in db
         title: _titleTEC.text,
         category: _category!.name,
         dueDate: _dateTEC.text,

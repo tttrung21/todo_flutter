@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/login/view_model/login_viewmodel.dart';
@@ -142,29 +143,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginButton(BuildContext context) {
-    return CupertinoButton(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        color: ModColorStyle.primary,
-        onPressed: () async {
-          FocusManager.instance.primaryFocus?.unfocus();
-          if (!_hasInteracted) {
-            setState(() {
-              _hasInteracted = true;
-            });
-          }
-          if (_key.currentState!.validate()) {
-            onLogin(context);
-          }
-        },
-        child: Text(
-          S.of(context).auth_SignIn,
-          style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-        ));
+    return authCupertinoButton(
+      title: S.of(context).auth_SignIn,
+      onPress: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        if (!_hasInteracted) {
+          setState(() {
+            _hasInteracted = true;
+          });
+        }
+        if (_key.currentState!.validate()) {
+          onLogin(context);
+        }
+      },
+    );
   }
 
   ///Function
   Future<void> onLogin(BuildContext context) async {
-    final provider = Provider.of<LoginViewModel>(context, listen: false);
+    final provider = context.read<LoginViewModel>();
     ShowLoading.loadingDialog(context);
     final res = await provider.signIn(_emailTEC.text, _passwordTEC.text);
     if (context.mounted) {

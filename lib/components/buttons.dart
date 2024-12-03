@@ -12,3 +12,14 @@ Widget normalCupertinoButton({void Function()? onPress, String title = '', TextS
     child: Text(title, style: style ?? ModTextStyle.button1.copyWith(color: ModColorStyle.white)),
   );
 }
+
+Widget authCupertinoButton({void Function()? onPress, String title = ''}){
+  return CupertinoButton(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      color: ModColorStyle.primary,
+      onPressed: onPress,
+      child: Text(
+        title,
+        style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+      ));
+}

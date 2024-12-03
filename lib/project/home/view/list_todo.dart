@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/project/home/view/todo_item.dart';
+import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 
@@ -9,12 +11,11 @@ class ListTodo extends StatelessWidget {
       {super.key,
       required this.height,
       required this.listItem,
-      required this.isCompleteList, this.updateFunc});
+      required this.isCompleteList});
 
   final double height;
   final List<TodoModel> listItem;
   final bool isCompleteList;
-  final Function? updateFunc;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class ListTodo extends StatelessWidget {
                       final res = await Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
                       if (res is TodoModel) {
-                        updateFunc!(res);
+                        context.read<HomeViewModel>().updateTodo(res);
                       }
                     },
                     child: TodoItem(item: item));

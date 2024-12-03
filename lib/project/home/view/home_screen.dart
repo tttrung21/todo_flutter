@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/components/button.dart';
+import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/model/todo_model.dart';
 
 import 'package:todo_app/localization/language_provider.dart';
@@ -16,23 +16,8 @@ import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        Provider.of<HomeViewModel>(context, listen: false).fetchTodos();
-      },
-    );
-  }
 
   bool _isIos() {
     return Platform.isIOS;
@@ -48,45 +33,48 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<HomeViewModel>(context);
-
-    return Scaffold(
-      backgroundColor: ModColorStyle.background,
-      appBar: _buildAppBarWidget(provider),
-      body: Stack(
-        children: [
-          const SizedBox(
-              height: 80, width: double.infinity, child: ColoredBox(color: ModColorStyle.primary)),
-          _buildBody(provider),
-          Selector<HomeViewModel, bool>(
-            builder: (context, value, child) {
-              if (value) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: ModColorStyle.primary,
-                ));
-              }
-              return SizedBox.shrink();
-            },
-            selector: (context, vm) => vm.isLoading,
-          )
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-          color: ModColorStyle.background,
-          child: normalCupertinoButton(
-              onPress: () async {
-                final res = await Navigator.of(context).push(_createRouteAddTask());
-                if (res is TodoModel) {
-                  provider.addTodo(res);
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => HomeViewModel()..fetchTodos(),
+      builder: (context, child) => Scaffold(
+        backgroundColor: ModColorStyle.background,
+        appBar: _buildAppBarWidget(context),
+        body: Stack(
+          children: [
+            const SizedBox(
+                height: 80,
+                width: double.infinity,
+                child: ColoredBox(color: ModColorStyle.primary)),
+            _buildBody(context),
+            Selector<HomeViewModel, bool>(
+              builder: (context, value, child) {
+                if (value) {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: ModColorStyle.primary,
+                  ));
                 }
+                return SizedBox.shrink();
               },
-              title: S.of(context).addTask_AddTask)),
+              selector: (context, vm) => vm.isLoading,
+            )
+          ],
+        ),
+        bottomNavigationBar: BottomAppBar(
+            color: ModColorStyle.background,
+            child: normalCupertinoButton(
+                onPress: () async {
+                  final res = await Navigator.of(context).push(_createRouteAddTask());
+                  if (res is TodoModel) {
+                    context.read<HomeViewModel>().addTodo(res);
+                  }
+                },
+                title: S.of(context).addTask_AddTask)),
+      ),
     );
   }
 
   ///Widgets
-  AppBar _buildAppBarWidget(HomeViewModel provider) {
+  AppBar _buildAppBarWidget(BuildContext context) {
     final langProvider = Provider.of<LanguageProvider>(context, listen: false);
 
     final locale = langProvider.locale.toString();
@@ -106,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(right: 16.0),
           child: InkWell(
             onTap: () {
-              onLogout(context, provider);
+              onLogout(context);
             },
             child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
           ),
@@ -122,10 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBody(HomeViewModel provider) {
+  Widget _buildBody(BuildContext context) {
     final mq = MediaQuery.of(context);
     final width = mq.size.width;
     final height = mq.size.height;
+    final todoList = context.watch<HomeViewModel>().todoList;
+    final completedList = context.watch<HomeViewModel>().completedList;
     return Padding(
         padding: (_isIos() && width > height)
             ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
@@ -141,9 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   ListTodo(
                     height: height,
-                    listItem: provider.todoList,
+                    listItem: todoList,
                     isCompleteList: false,
-                    updateFunc: provider.updateTodo,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -155,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  ListTodo(height: height, listItem: provider.completedList, isCompleteList: true),
+                  ListTodo(height: height, listItem: completedList, isCompleteList: true),
                 ],
               );
             }, childCount: 1)),
@@ -164,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   ///Function
-  void onLogout(BuildContext context, HomeViewModel provider) {
-    provider.logout();
+  void onLogout(BuildContext context) {
+    context.read<HomeViewModel>().logout();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => const LoginScreen(),
     ));

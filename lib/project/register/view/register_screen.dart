@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/register/view_model/register_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
-import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 import 'package:todo_app/utils/validate.dart';
@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => RegisterViewModel(),
-      builder: (context, child) =>  GestureDetector(
+      builder: (context, child) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           backgroundColor: ModColorStyle.primary,
@@ -122,29 +122,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildRegisterButton(BuildContext context) {
-    return CupertinoButton(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        color: ModColorStyle.primary,
-        onPressed: () async {
-          FocusManager.instance.primaryFocus?.unfocus();
-          if (!_hasInteracted) {
-            setState(() {
-              _hasInteracted = true;
-            });
-          }
-          if (_key.currentState!.validate()) {
-            onRegister(context);
-          }
-        },
-        child: Text(
-          S.of(context).auth_Register,
-          style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-        ));
+    return authCupertinoButton(
+      title: S.of(context).auth_Register,
+      onPress: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        if (!_hasInteracted) {
+          setState(() {
+            _hasInteracted = true;
+          });
+        }
+        if (_key.currentState!.validate()) {
+          onRegister(context);
+        }
+      },
+    );
   }
 
   ///Function
   Future<void> onRegister(BuildContext context) async {
-    final provider = Provider.of<RegisterViewModel>(context, listen: false);
+    final provider = context.read<RegisterViewModel>();
     ShowLoading.loadingDialog(context);
     final res = await provider.signUp(_emailTEC.text, _passwordTEC.text);
     if (context.mounted) {

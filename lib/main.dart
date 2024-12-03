@@ -17,11 +17,8 @@ void main() async {
     url: Configs.apiBaseUrl,
     anonKey: Configs.apiKey,
   );
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => HomeViewModel()),
-    ChangeNotifierProvider(create: (context) => NewTaskViewModel()),
-    ChangeNotifierProvider(create: (context) => LanguageProvider()..loadLanguage())
-  ], child: MyApp()));
+  runApp(ChangeNotifierProvider(
+      create: (BuildContext context) => LanguageProvider()..loadLanguage(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

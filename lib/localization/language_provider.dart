@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/shared/locale_helper.dart';
+import 'package:todo_app/localization/locale_helper.dart';
 
 
 class LanguageProvider with ChangeNotifier{

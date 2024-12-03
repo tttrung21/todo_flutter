@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 
-
 Widget normalTextFormField(String placeholder, TextEditingController tec,
     {bool readOnly = false,
     void Function()? onTap,
