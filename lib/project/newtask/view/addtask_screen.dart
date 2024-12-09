@@ -88,22 +88,42 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: Scaffold(
           backgroundColor: ModColorStyle.background,
           appBar: _buildAppBar,
-          body: _buildBody,
+          body: _buildBody(context),
           bottomNavigationBar: BottomAppBar(
               color: ModColorStyle.background,
-              child: normalCupertinoButton(
-                  onPress: _category == null
-                      ? null
-                      : () {
-                          if (!_hasInteracted) {
-                            _hasInteracted = true;
-                            setState(() {});
-                          }
-                          if (_key.currentState!.validate()) {
-                            onButtonPress(context);
-                          }
-                        },
-                  title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save)),
+              child: Selector<NewTaskViewModel,bool>(
+                selector: (context, vm) => vm.emptyCategory,
+                builder: (context, value, child) {
+                  print('build button');
+                  return normalCupertinoButton(
+                      onPress: value
+                          ? null
+                          : () {
+                              if (!_hasInteracted) {
+                                _hasInteracted = true;
+                                setState(() {});
+                              }
+                              if (_key.currentState!.validate()) {
+                                onButtonPress(context);
+                              }
+                            },
+                      title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save);
+                },
+
+                // child: normalCupertinoButton(
+                //     onPress: _category == null
+                //         ? null
+                //         : () {
+                //             if (!_hasInteracted) {
+                //               _hasInteracted = true;
+                //               setState(() {});
+                //             }
+                //             if (_key.currentState!.validate()) {
+                //               onButtonPress(context);
+                //             }
+                //           },
+                //     title: _isUpdate ? S.of(context).addTask_Update : S.of(context).addTask_Save),
+              )),
         ),
       ),
     );
@@ -143,7 +163,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  Widget get _buildBody {
+  Widget _buildBody(BuildContext context) {
     final mq = MediaQuery.of(context);
     final width = mq.size.width;
     final height = mq.size.height;
@@ -165,7 +185,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 24,
               ),
-              _buildCategory,
+              _buildCategory(context),
               const SizedBox(
                 height: 24,
               ),
@@ -253,7 +273,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  Widget get _buildCategory {
+  Widget _buildCategory(BuildContext context) {
     return Row(
       children: [
         GetLabel(label: S.of(context).addTask_Category),
@@ -261,22 +281,47 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           width: 16,
         ),
         for (int i = 0; i < Category.values.length; i++)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: InkWell(
-              onTap: () {
-                if (_category == null || _category != Category.values[i]) {
-                  _category = Category.values[i];
-                } else {
-                  _category = null;
-                }
-                setState(() {});
-              },
-              child: Opacity(
-                  opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
-                  child: Image.asset('assets/images/${Category.values[i].name}.png')),
-            ),
-          )
+          Selector<NewTaskViewModel, Category?>(
+              selector: (context, vm) => vm.category,
+              builder: (context, value, child) {
+                print('build category');
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (_category == null || _category != Category.values[i]) {
+                        _category = Category.values[i];
+                      } else {
+                        _category = null;
+                      }
+                      context.read<NewTaskViewModel>().setCategory(_category);
+                      // setState(() {});
+                    },
+                    child: Opacity(
+                        opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
+                        child: Image.asset('assets/images/${Category.values[i].name}.png')),
+                  ),
+                );
+              }
+
+              // child: Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //   child: InkWell(
+              //     onTap: () {
+              //       if (_category == null || _category != Category.values[i]) {
+              //         _category = Category.values[i];
+              //       } else {
+              //         _category = null;
+              //       }
+              //       context.read<NewTaskViewModel>().setCategory(_category);
+              //       // setState(() {});
+              //     },
+              //     child: Opacity(
+              //         opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
+              //         child: Image.asset('assets/images/${Category.values[i].name}.png')),
+              //   ),
+              // ),
+              )
       ],
     );
   }

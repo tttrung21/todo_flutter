@@ -13,6 +13,17 @@ class ConvertUtils{
       return DateFormat('dd/MM/yyyy').format(date);
     }
   }
+  static String Mdy(dynamic date) {
+    if (date == null) {
+      return '';
+    }
+    if (date.runtimeType == String) {
+      final tmp = DateTime.tryParse(date);
+      return DateFormat('MMMM dd, yyyy').format(tmp!);
+    } else {
+      return DateFormat('MMMM dd, yyyy').format(date);
+    }
+  }
   static String hms(TimeOfDay date) {
     final hour = date.hour;
     final minute = date.minute;

@@ -15,6 +15,7 @@ import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
+import 'package:todo_app/utils/convert_utils.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
     if (locale == 'vi') {
       return '${date.day} Tháng ${date.month}, ${date.year}';
     } else {
-      return DateFormat('MMMM dd, yyyy', locale).format(date);
+      return ConvertUtils.Mdy(date);
     }
   }
 
