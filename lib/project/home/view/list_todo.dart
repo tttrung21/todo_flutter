@@ -19,30 +19,28 @@ class ListTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        height: height / 3.5,
-        decoration:
-            BoxDecoration(color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            final item = listItem[index];
-            return isCompleteList
-                ? TodoItem(item: item)
-                : InkWell(
-                    onTap: () async {
-                      final res = await Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
-                      if (res is TodoModel) {
-                        context.read<HomeViewModel>().updateTodo(res);
-                      }
-                    },
-                    child: TodoItem(item: item));
-          },
-          itemCount: listItem.length,
-          separatorBuilder: (context, index) =>
-              const Divider(color: ModColorStyle.disable, thickness: 0.1),
-        ),
+    return Container(
+      height: height / 3.5,
+      decoration:
+          BoxDecoration(color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
+      child: ListView.separated(
+        itemBuilder: (context, index) {
+          final item = listItem[index];
+          return isCompleteList
+              ? TodoItem(item: item)
+              : InkWell(
+                  onTap: () async {
+                    final res = await Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
+                    if (res is TodoModel) {
+                      context.read<HomeViewModel>().updateTodo(res);
+                    }
+                  },
+                  child: TodoItem(item: item));
+        },
+        itemCount: listItem.length,
+        separatorBuilder: (context, index) =>
+            const Divider(color: ModColorStyle.disable, thickness: 0.1),
       ),
     );
   }

@@ -82,7 +82,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => NewTaskViewModel(),
+      create: (BuildContext context) => NewTaskViewModel()..setCategory(_category),
       builder: (context, child) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
@@ -173,7 +173,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           padding: (_isIos() && width > height)
-              ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+              ? EdgeInsets.fromLTRB(mq.padding.left + 8, 16, mq.padding.right + 8, 16)
               : const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

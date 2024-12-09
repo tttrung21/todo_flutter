@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/model/todo_model.dart';
@@ -119,11 +118,10 @@ class HomeScreen extends StatelessWidget {
     final completedList = context.watch<HomeViewModel>().completedList;
     return Padding(
         padding: (_isIos() && width > height)
-            ? EdgeInsets.fromLTRB(mq.padding.left, 16, mq.padding.right, 16)
+            ? EdgeInsets.fromLTRB(mq.padding.left + 8, 16, mq.padding.right + 8, 16)
             : const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: CustomScrollView(
-          physics:
-              width > height ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
