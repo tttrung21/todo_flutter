@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       }
     });
   }
-  Future<void> _checkSession() async {
+  void _checkSession()  {
     final client = Supabase.instance.client;
 
     if (client.auth.currentSession == null) {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +13,10 @@ import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
 import 'package:todo_app/utils/convert_utils.dart';
+import 'package:todo_app/utils/device_info.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  bool _isIos() {
-    return Platform.isIOS;
-  }
 
   String _formatDate(DateTime date, String locale) {
     if (locale == 'vi') {
@@ -111,14 +106,15 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    final mq = MediaQuery.of(context);
-    final width = mq.size.width;
-    final height = mq.size.height;
+    final size = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
+    final width = size.width;
+    final height = size.height;
     final todoList = context.watch<HomeViewModel>().todoList;
     final completedList = context.watch<HomeViewModel>().completedList;
     return Padding(
-        padding: (_isIos() && width > height)
-            ? EdgeInsets.fromLTRB(mq.padding.left + 8, 16, mq.padding.right + 8, 16)
+        padding: (DeviceInfo().isIos && width > height)
+            ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
             : const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),

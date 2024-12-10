@@ -21,8 +21,7 @@ class DeviceInfo{
       }
     } catch (e) {
       throw Exception(e);
-    } finally {
-      print('Device ID: $deviceId');
     }
   }
+  bool get isIos => Platform.isIOS;
 }

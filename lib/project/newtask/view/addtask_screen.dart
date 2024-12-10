@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -52,10 +50,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   bool _getOpacity(Category cat) {
     return _category == cat || _category == null;
-  }
-
-  bool _isIos() {
-    return Platform.isIOS;
   }
 
   Future<void> _getDate(TextEditingController tec) async {
@@ -164,16 +158,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    final mq = MediaQuery.of(context);
-    final width = mq.size.width;
-    final height = mq.size.height;
+    final size = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
+    final width = size.width;
+    final height = size.height;
     return Form(
         key: _key,
         autovalidateMode:
             _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
-          padding: (_isIos() && width > height)
-              ? EdgeInsets.fromLTRB(mq.padding.left + 8, 16, mq.padding.right + 8, 16)
+          padding: (DeviceInfo().isIos && width > height)
+              ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
               : const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
