@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "auth_Password": MessageLookupByLibrary.simpleMessage("Mật khẩu"),
         "auth_Register": MessageLookupByLibrary.simpleMessage("Đăng ký"),
         "auth_SignIn": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
+        "common_Cancel": MessageLookupByLibrary.simpleMessage("Huỷ"),
         "common_Delete": MessageLookupByLibrary.simpleMessage("Xóa"),
         "common_EmptyField":
             MessageLookupByLibrary.simpleMessage("Trường không được để trống!"),

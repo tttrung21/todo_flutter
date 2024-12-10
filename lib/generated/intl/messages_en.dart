@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "auth_Password": MessageLookupByLibrary.simpleMessage("Password"),
         "auth_Register": MessageLookupByLibrary.simpleMessage("Register"),
         "auth_SignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
+        "common_Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "common_Delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "common_EmptyField":
             MessageLookupByLibrary.simpleMessage("Field cannot be empty!"),

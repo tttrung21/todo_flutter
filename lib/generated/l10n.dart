@@ -120,6 +120,16 @@ class S {
     );
   }
 
+  /// `Cancel`
+  String get common_Cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'common_Cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `My Todo List`
   String get home_Title {
     return Intl.message(

@@ -6,6 +6,7 @@
   "common_PasswordErrorLength": "Password must be at least 8 characters long",
   "common_PasswordErrorMatch": "Passwords do not match",
   "common_Delete": "Delete",
+  "common_Cancel": "Cancel",
 
   "home_Title" : "My Todo List",
   "home_Complete" : "Completed",

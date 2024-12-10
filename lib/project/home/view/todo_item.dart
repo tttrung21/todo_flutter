@@ -28,7 +28,7 @@ class TodoItem extends StatelessWidget {
               final res = await showDialog(
                 context: context,
                 builder: (context) =>
-                    CommonDialog(type: EnumTypeDialog.warning, title: S.of(context).common_Delete),
+                    CommonDialog(type: EnumTypeDialog.warning, title: S.of(context).common_Delete,isDelete: true,),
               );
               if (res == true) {
                 final res = await provider.deleteTodo(item.id);
