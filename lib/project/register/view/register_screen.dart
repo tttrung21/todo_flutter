@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 text: TextSpan(
                     text: S.of(context).auth_Welcome,
                     children: [
-                      TextSpan(text: '\n${S.of(context).auth_To} '),
+                      TextSpan(text: '\n${S.of(context).auth_To}'),
                       TextSpan(
                           text: 'Todo App',
                           style: ModTextStyle.title3.copyWith(color: ModColorStyle.primary))
@@ -96,6 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   normalTextFormField(
                     'Email',
                     _emailTEC,
+                    isLabelText: true,
                     validator: (value) {
                       if (_hasInteracted) {
                         return CommonValidate.validateEmail(value, context);
@@ -109,6 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   normalTextFormField(
                     S.of(context).auth_Password,
                     _passwordTEC,
+                    isLabelText: true,
                     isObscure: true,
                     validator: (value) {
                       if (_hasInteracted) {
@@ -123,6 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   normalTextFormField(
                     S.of(context).auth_ConfirmPassword,
                     _confirmTEC,
+                    isLabelText: true,
                     isObscure: true,
                     validator: (value) {
                       if (_hasInteracted) {

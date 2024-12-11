@@ -157,40 +157,44 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final padding = MediaQuery.paddingOf(context);
-    final width = size.width;
-    final height = size.height;
-    return Form(
-        key: _key,
-        autovalidateMode:
-            _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-        child: SingleChildScrollView(
-          padding: (DeviceInfo().isIos && width > height)
-              ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
-              : const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 8,
-              ),
-              _buildTaskTitle,
-              const SizedBox(
-                height: 24,
-              ),
-              _buildCategory(context),
-              const SizedBox(
-                height: 24,
-              ),
-              _buildDateAndTime,
-              const SizedBox(
-                height: 24,
-              ),
-              _buildNotes
-            ],
-          ),
-        ));
+    // final size = MediaQuery.sizeOf(context);
+    // final padding = MediaQuery.paddingOf(context);
+    // final width = size.width;
+    // final height = size.height;
+    return SafeArea(
+      child: Form(
+          key: _key,
+          autovalidateMode:
+              _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+          child: SingleChildScrollView(
+            padding:
+            // (DeviceInfo().isIos && width > height)
+            //     ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
+            //     :
+            const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                _buildTaskTitle,
+                const SizedBox(
+                  height: 24,
+                ),
+                _buildCategory(context),
+                const SizedBox(
+                  height: 24,
+                ),
+                _buildDateAndTime,
+                const SizedBox(
+                  height: 24,
+                ),
+                _buildNotes
+              ],
+            ),
+          )),
+    );
   }
 
   Widget get _buildTaskTitle {

@@ -7,6 +7,7 @@ Widget normalTextFormField(String placeholder, TextEditingController tec,
     void Function()? onTap,
     int? maxLine = 1,
     bool isObscure = false,
+    bool isLabelText = false,
     FormFieldValidator<String>? validator,
     Image? image}) {
   return TextFormField(
@@ -17,7 +18,7 @@ Widget normalTextFormField(String placeholder, TextEditingController tec,
     controller: tec,
     obscureText: isObscure,
     decoration: InputDecoration(
-        labelText: placeholder,
+        labelText: isLabelText ? placeholder : null,
         suffixIcon: image,
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),

@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: TextSpan(
                     text: S.of(context).auth_Welcome,
                     children: [
-                      TextSpan(text: '\n${S.of(context).auth_To} '),
+                      TextSpan(text: '\n${S.of(context).auth_To}'),
                       TextSpan(
                           text: 'Todo App',
                           style: ModTextStyle.title3.copyWith(color: ModColorStyle.primary))
@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   normalTextFormField(
                     'Email',
                     _emailTEC,
+                    isLabelText: true,
                     validator: (value) {
                       if (_hasInteracted) {
                         return CommonValidate.validateEmail(value, context);
@@ -118,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     S.of(context).auth_Password,
                     _passwordTEC,
                     isObscure: true,
+                    isLabelText: true,
                     validator: (value) {
                       if (_hasInteracted) {
                         return CommonValidate.validatePassword(value, context);

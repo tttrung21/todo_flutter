@@ -32,28 +32,9 @@ class HomeScreen extends StatelessWidget {
       create: (BuildContext context) => HomeViewModel()..fetchTodos(),
       builder: (context, child) => Scaffold(
         backgroundColor: ModColorStyle.background,
-        appBar: _buildAppBarWidget(context),
-        body: Stack(
-          children: [
-            const SizedBox(
-                height: 80,
-                width: double.infinity,
-                child: ColoredBox(color: ModColorStyle.primary)),
-            _buildBody(context),
-            Selector<HomeViewModel, bool>(
-              builder: (context, value, child) {
-                if (value) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                    color: ModColorStyle.primary,
-                  ));
-                }
-                return SizedBox.shrink();
-              },
-              selector: (context, vm) => vm.isLoading,
-            )
-          ],
-        ),
+        // appBar: _buildAppBarWidget(context),
+        appBar: AppBar(leading: SizedBox(),toolbarHeight: 0,backgroundColor: ModColorStyle.primary,),
+        body: _buildBody(context),
         bottomNavigationBar: BottomAppBar(
             color: ModColorStyle.background,
             child: normalCupertinoButton(
@@ -69,68 +50,141 @@ class HomeScreen extends StatelessWidget {
   }
 
   ///Widgets
-  AppBar _buildAppBarWidget(BuildContext context) {
-    final langProvider = context.read<LanguageProvider>();
-
-    final locale = langProvider.locale.toString();
-    final date = _formatDate(DateTime.now(), locale);
-    return AppBar(
-      backgroundColor: ModColorStyle.primary,
-      title: Text(
-        date,
-        style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-      ),
-      leading: InkWell(
-        onTap: () => changeLang(langProvider),
-        child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: InkWell(
-            onTap: () {
-              onLogout(context);
-            },
-            child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
-          ),
-        ),
-      ],
-      centerTitle: true,
-      bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Text(
-            S.of(context).home_Title,
-            style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
-          )),
-    );
-  }
+  // AppBar _buildAppBarWidget(BuildContext context) {
+  //   final langProvider = context.read<LanguageProvider>();
+  //
+  //   final locale = langProvider.locale.toString();
+  //   final date = _formatDate(DateTime.now(), locale);
+  //   return AppBar(
+  //     backgroundColor: ModColorStyle.primary,
+  //     title: Text(
+  //       date,
+  //       style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+  //     ),
+  //     leading: InkWell(
+  //       onTap: () => changeLang(langProvider),
+  //       child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
+  //     ),
+  //     actions: [
+  //       Padding(
+  //         padding: const EdgeInsets.only(right: 16.0),
+  //         child: InkWell(
+  //           onTap: () {
+  //             onLogout(context);
+  //           },
+  //           child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
+  //         ),
+  //       ),
+  //     ],
+  //     centerTitle: true,
+  //     bottom: PreferredSize(
+  //         preferredSize: const Size.fromHeight(50),
+  //         child: Text(
+  //           S.of(context).home_Title,
+  //           style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+  //         )),
+  //   );
+  // }
 
   Widget _buildBody(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final padding = MediaQuery.paddingOf(context);
     final width = size.width;
     final height = size.height;
+
+    final langProvider = context.read<LanguageProvider>();
+
+    final locale = langProvider.locale.toString();
+    final date = _formatDate(DateTime.now(), locale);
+
     final todoList = context.watch<HomeViewModel>().todoList;
     final completedList = context.watch<HomeViewModel>().completedList;
-    return Padding(
-        padding: (DeviceInfo().isIos && width > height)
-            ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
-            : const EdgeInsets.fromLTRB(16, 16, 16, 8),
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTodo(
-                    height: height,
-                    listItem: todoList,
-                    isCompleteList: false,
+    return SafeArea(
+      child: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                backgroundColor: ModColorStyle.primary,
+                expandedHeight: 116.0,
+                // title: LayoutBuilder(
+                //   builder: (context, constraints) {
+                //     final isCollapsed = constraints.maxHeight <= kToolbarHeight;
+                //     return isCollapsed
+                //         ? SizedBox.shrink()
+                //         : Text(
+                //             date,
+                //             style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                //           );
+                //   },
+                // ),
+                // bottom: PreferredSize(
+                //     preferredSize: Size.fromHeight(20),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Text(
+                //         S.of(context).home_Title,
+                //         style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+                //       ),
+                //     )),
+                flexibleSpace: FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.zero,
+                  centerTitle: true,
+                  title: LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      final isCollapsed = constraints.maxHeight <= 76;
+                      return isCollapsed
+                          ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                                S.of(context).home_Title,
+                                style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+                              ),
+                          )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(height: 8,),
+                                Text(
+                                  date,
+                                  style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                                ),
+                                Text(
+                                  S.of(context).home_Title,
+                                  style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+                                )
+                              ],
+                            );
+                    },
                   ),
+                  expandedTitleScale: 1.2,
+                ),
+                leading: InkWell(
+                  onTap: () => changeLang(langProvider),
+                  child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
+                ),
+                actions: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: InkWell(
+                      onTap: () {
+                        onLogout(context);
+                      },
+                      child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
+                    ),
+                  ),
+                ],              ),
+              SliverPadding(
+                padding: (DeviceInfo().isIos && width > height)
+                    ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
+                    : const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                sliver: ListTodo(listItem: todoList, isCompleteList: false),
+              ),
+              if (completedList.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -139,12 +193,53 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ListTodo(height: height, listItem: completedList, isCompleteList: true),
-                ],
-              );
-            }, childCount: 1)),
-          ],
-        ));
+                ),
+              SliverPadding(
+                  padding: (DeviceInfo().isIos && width > height)
+                      ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
+                      : const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  sliver: ListTodo(listItem: completedList, isCompleteList: true))
+              // SliverList(
+              //     delegate: SliverChildBuilderDelegate((context, index) {
+              //   return Column(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       ListTodo(
+              //         height: height,
+              //         listItem: todoList,
+              //         isCompleteList: false,
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.symmetric(vertical: 16),
+              //         child: Align(
+              //           alignment: Alignment.centerLeft,
+              //           child: Text(
+              //             S.of(context).home_Complete,
+              //             style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
+              //           ),
+              //         ),
+              //       ),
+              //       ListTodo(height: height, listItem: completedList, isCompleteList: true),
+              //     ],
+              //   );
+              // }, childCount: 1)),
+            ],
+          ),
+          Selector<HomeViewModel, bool>(
+            builder: (context, value, child) {
+              if (value) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: ModColorStyle.primary,
+                ));
+              }
+              return SizedBox.shrink();
+            },
+            selector: (context, vm) => vm.isLoading,
+          )
+        ],
+      ),
+    );
   }
 
   ///Function
