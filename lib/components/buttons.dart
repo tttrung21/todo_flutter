@@ -15,11 +15,16 @@ Widget normalCupertinoButton({void Function()? onPress, String title = '', TextS
 
 Widget authCupertinoButton({void Function()? onPress, String title = ''}){
   return CupertinoButton(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+      borderRadius: BorderRadius.circular(16),
       color: ModColorStyle.primary,
       onPressed: onPress,
-      child: Text(
-        title,
-        style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+      child: Container(
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+        ),
       ));
 }

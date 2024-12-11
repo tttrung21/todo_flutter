@@ -210,6 +210,46 @@ class S {
     );
   }
 
+  /// `Welcome!`
+  String get auth_Welcome {
+    return Intl.message(
+      'Welcome!',
+      name: 'auth_Welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to `
+  String get auth_To {
+    return Intl.message(
+      'to ',
+      name: 'auth_To',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account yet? Try `
+  String get auth_NotHaveAccount {
+    return Intl.message(
+      'Don\'t have an account yet? Try ',
+      name: 'auth_NotHaveAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already have an account? Go `
+  String get auth_AlreadyHaveAccount {
+    return Intl.message(
+      'Already have an account? Go ',
+      name: 'auth_AlreadyHaveAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add New Task`
   String get addTask_AddTask {
     return Intl.message(

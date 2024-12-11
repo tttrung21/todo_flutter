@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/project/login/view/login_screen.dart';
 import 'package:todo_app/project/register/view_model/register_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 import 'package:todo_app/utils/validate.dart';
+
+import '../../../style/text_style.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -40,8 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context, child) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          backgroundColor: ModColorStyle.primary,
-          appBar: _buildAppBar(context),
+          backgroundColor: ModColorStyle.white,
+          appBar: _buildAppBar,
           body: _buildBody(context),
         ),
       ),
@@ -49,92 +51,143 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   ///Widget
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: ModColorStyle.primary,
-      leading: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: const Icon(CupertinoIcons.back, size: 24, color: ModColorStyle.white),
-      ),
-    );
+  AppBar get _buildAppBar{
+    return AppBar(backgroundColor: ModColorStyle.white, leading: SizedBox());
   }
 
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _key,
-        autovalidateMode:
-            _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-          child: Column(
-            children: [
-              normalTextFormField(
-                'Email',
-                _emailTEC,
-                validator: (value) {
-                  if (_hasInteracted) {
-                    return CommonValidate.validateEmail(value, context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              normalTextFormField(
-                S.of(context).auth_Password,
-                _passwordTEC,
-                isObscure: true,
-                validator: (value) {
-                  if (_hasInteracted) {
-                    return CommonValidate.validatePassword(value, context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              normalTextFormField(
-                S.of(context).auth_ConfirmPassword,
-                _confirmTEC,
-                isObscure: true,
-                validator: (value) {
-                  if (_hasInteracted) {
-                    return CommonValidate.validateConfirm(value, _passwordTEC.text, context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              _buildRegisterButton(context)
-            ],
+      child: Column(
+        children: [
+          Hero(
+              tag: 'AppIcon',
+              child: Image.asset('assets/images/todo.png', width: 150, height: 150)),
+          SizedBox(
+            height: 16,
           ),
-        ),
+          Hero(
+            tag: 'Welcome',
+            child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: S.of(context).auth_Welcome,
+                    children: [
+                      TextSpan(text: '\n${S.of(context).auth_To} '),
+                      TextSpan(
+                          text: 'Todo App',
+                          style: ModTextStyle.title3.copyWith(color: ModColorStyle.primary))
+                    ],
+                    style: ModTextStyle.title3.copyWith(color: ModColorStyle.label))),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Form(
+            key: _key,
+            autovalidateMode:
+                _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
+              child: Column(
+                children: [
+                  normalTextFormField(
+                    'Email',
+                    _emailTEC,
+                    validator: (value) {
+                      if (_hasInteracted) {
+                        return CommonValidate.validateEmail(value, context);
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  normalTextFormField(
+                    S.of(context).auth_Password,
+                    _passwordTEC,
+                    isObscure: true,
+                    validator: (value) {
+                      if (_hasInteracted) {
+                        return CommonValidate.validatePassword(value, context);
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  normalTextFormField(
+                    S.of(context).auth_ConfirmPassword,
+                    _confirmTEC,
+                    isObscure: true,
+                    validator: (value) {
+                      if (_hasInteracted) {
+                        return CommonValidate.validateConfirm(value, _passwordTEC.text, context);
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildRegisterButton(context)
+                ],
+              ),
+            ),
+          ),
+
+        ],
       ),
     );
   }
 
   Widget _buildRegisterButton(BuildContext context) {
-    return authCupertinoButton(
-      title: S.of(context).auth_Register,
-      onPress: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        if (!_hasInteracted) {
-          setState(() {
-            _hasInteracted = true;
-          });
-        }
-        if (_key.currentState!.validate()) {
-          onRegister(context);
-        }
-      },
+    return Column(
+      children: [
+        authCupertinoButton(
+          title: S.of(context).auth_Register,
+          onPress: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            if (!_hasInteracted) {
+              setState(() {
+                _hasInteracted = true;
+              });
+            }
+            if (_key.currentState!.validate()) {
+              onRegister(context);
+            }
+          },
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        _buildLoginButton()
+      ],
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(S.of(context).auth_AlreadyHaveAccount,
+            style: ModTextStyle.item2.copyWith(color: ModColorStyle.label)),
+        GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              _hasInteracted = false;
+              _key.currentState?.reset();
+              Navigator.of(context).pushReplacement(_createRouteLogin());
+            },
+            child: Text(
+              S.of(context).auth_SignIn,
+              style: ModTextStyle.item2.copyWith(color: ModColorStyle.primary),
+            )),
+      ],
     );
   }
 
@@ -166,5 +219,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       }
     }
+  }
+
+  Route _createRouteLogin() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(-1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          final tween = Tween(begin: begin, end: end);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
+
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+        });
   }
 }

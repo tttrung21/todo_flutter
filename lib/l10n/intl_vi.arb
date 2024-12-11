@@ -17,6 +17,11 @@
   "auth_Password" : "Mật khẩu",
   "auth_ConfirmPassword" : "Xác nhận mật khẩu",
   "auth_CreateSuccess" : "Tạo tài khoản mới thành công",
+  "auth_Welcome": "Chào mừng!",
+  "auth_To": "đến ",
+  "auth_NotHaveAccount": "Chưa có tài khoản? Hãy thử ",
+  "auth_AlreadyHaveAccount": "Đã có tài khoản? Tới ",
+
 
   "addTask_AddTask" : "Thêm công việc mới",
   "addTask_TaskTitle" : "Tiêu đề công việc",

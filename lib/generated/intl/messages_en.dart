@@ -30,13 +30,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "addTask_TaskTitle": MessageLookupByLibrary.simpleMessage("Task Title"),
         "addTask_Time": MessageLookupByLibrary.simpleMessage("Time"),
         "addTask_Update": MessageLookupByLibrary.simpleMessage("Update"),
+        "auth_AlreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
+            "Already have an account? Go "),
         "auth_ConfirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "auth_CreateSuccess": MessageLookupByLibrary.simpleMessage(
             "Successfully create new account"),
+        "auth_NotHaveAccount": MessageLookupByLibrary.simpleMessage(
+            "Don\'t have an account yet? Try "),
         "auth_Password": MessageLookupByLibrary.simpleMessage("Password"),
         "auth_Register": MessageLookupByLibrary.simpleMessage("Register"),
         "auth_SignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
+        "auth_To": MessageLookupByLibrary.simpleMessage("to "),
+        "auth_Welcome": MessageLookupByLibrary.simpleMessage("Welcome!"),
         "common_Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "common_Delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "common_EmptyField":

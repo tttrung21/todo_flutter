@@ -17,6 +17,10 @@
   "auth_Password" : "Password",
   "auth_ConfirmPassword" : "Confirm Password",
   "auth_CreateSuccess" : "Successfully create new account",
+  "auth_Welcome" : "Welcome!",
+  "auth_To" : "to ",
+  "auth_NotHaveAccount" : "Don't have an account yet? Try ",
+  "auth_AlreadyHaveAccount" : "Already have an account? Go ",
 
   "addTask_AddTask" : "Add New Task",
   "addTask_TaskTitle" : "Task Title",

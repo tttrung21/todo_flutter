@@ -17,6 +17,7 @@ Widget normalTextFormField(String placeholder, TextEditingController tec,
     controller: tec,
     obscureText: isObscure,
     decoration: InputDecoration(
+        labelText: placeholder,
         suffixIcon: image,
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),

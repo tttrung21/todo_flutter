@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, child) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          backgroundColor: ModColorStyle.primary,
+          backgroundColor: ModColorStyle.white,
           appBar: _buildAppBar,
           body: _buildBody(context),
         ),
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
   ///Widget
   AppBar get _buildAppBar {
     return AppBar(
-      backgroundColor: ModColorStyle.primary,
+      backgroundColor: ModColorStyle.white,
       leading: const SizedBox(),
     );
   }
@@ -66,79 +66,112 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _key,
-        autovalidateMode:
-            _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-          child: Column(
-            children: [
-              normalTextFormField(
-                'Email',
-                _emailTEC,
-                validator: (value) {
-                  if (_hasInteracted) {
-                    return CommonValidate.validateEmail(value, context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              normalTextFormField(
-                S.of(context).auth_Password,
-                _passwordTEC,
-                isObscure: true,
-                validator: (value) {
-                  if (_hasInteracted) {
-                    return CommonValidate.validatePassword(value, context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              _buildButtons(context)
-            ],
+      child: Column(
+        children: [
+          Hero(
+              tag: 'AppIcon',
+              child: Image.asset('assets/images/todo.png', width: 150, height: 150)),
+          SizedBox(
+            height: 16,
           ),
-        ),
+          Hero(
+            tag: 'Welcome',
+            child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: S.of(context).auth_Welcome,
+                    children: [
+                      TextSpan(text: '\n${S.of(context).auth_To} '),
+                      TextSpan(
+                          text: 'Todo App',
+                          style: ModTextStyle.title3.copyWith(color: ModColorStyle.primary))
+                    ],
+                    style: ModTextStyle.title3.copyWith(color: ModColorStyle.label))),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Form(
+            key: _key,
+            autovalidateMode:
+                _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
+              child: Column(
+                children: [
+                  normalTextFormField(
+                    'Email',
+                    _emailTEC,
+                    validator: (value) {
+                      if (_hasInteracted) {
+                        return CommonValidate.validateEmail(value, context);
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  normalTextFormField(
+                    S.of(context).auth_Password,
+                    _passwordTEC,
+                    isObscure: true,
+                    validator: (value) {
+                      if (_hasInteracted) {
+                        return CommonValidate.validatePassword(value, context);
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildButtons(context)
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildButtons(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        _buildRegisterButton(context),
         _buildLoginButton(context),
-        const SizedBox(
-          width: 80,
+        SizedBox(
+          height: 16,
         ),
+        _buildRegisterButton(context),
       ],
     );
   }
 
   Widget _buildRegisterButton(BuildContext context) {
-    return TextButton(
-        onPressed: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-          _hasInteracted = false;
-          _key.currentState?.reset();
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
-          _emailTEC.clear();
-          _passwordTEC.clear();
-        },
-        child: Text(
-          S.of(context).auth_Register,
-          style: ModTextStyle.label.copyWith(color: ModColorStyle.primary),
-        ));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(S.of(context).auth_NotHaveAccount,
+            style: ModTextStyle.item2.copyWith(color: ModColorStyle.label)),
+        GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              _hasInteracted = false;
+              _key.currentState?.reset();
+              Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) => const RegisterScreen()));
+              _emailTEC.clear();
+              _passwordTEC.clear();
+            },
+            child: Text(
+              S.of(context).auth_Register,
+              style: ModTextStyle.item2.copyWith(color: ModColorStyle.primary),
+            )),
+      ],
+    );
   }
 
   Widget _buildLoginButton(BuildContext context) {

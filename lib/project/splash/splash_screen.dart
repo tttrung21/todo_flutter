@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       body: Center(
         child: ScaleTransition(
           scale: _animation,
-          child: Image.asset('assets/images/todo.png', width: 100, height: 100),
+          child: Hero(tag: 'AppIcon', child: Image.asset('assets/images/todo.png', width: 100, height: 100)),
         ),
       ),
     );

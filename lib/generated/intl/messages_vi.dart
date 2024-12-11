@@ -32,13 +32,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tiêu đề công việc"),
         "addTask_Time": MessageLookupByLibrary.simpleMessage("Thời gian"),
         "addTask_Update": MessageLookupByLibrary.simpleMessage("Cập nhật"),
+        "auth_AlreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Đã có tài khoản? Tới "),
         "auth_ConfirmPassword":
             MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
         "auth_CreateSuccess": MessageLookupByLibrary.simpleMessage(
             "Tạo tài khoản mới thành công"),
+        "auth_NotHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Chưa có tài khoản? Hãy thử "),
         "auth_Password": MessageLookupByLibrary.simpleMessage("Mật khẩu"),
         "auth_Register": MessageLookupByLibrary.simpleMessage("Đăng ký"),
         "auth_SignIn": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
+        "auth_To": MessageLookupByLibrary.simpleMessage("đến "),
+        "auth_Welcome": MessageLookupByLibrary.simpleMessage("Chào mừng!"),
         "common_Cancel": MessageLookupByLibrary.simpleMessage("Huỷ"),
         "common_Delete": MessageLookupByLibrary.simpleMessage("Xóa"),
         "common_EmptyField":

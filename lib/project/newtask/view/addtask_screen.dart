@@ -88,7 +88,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               child: Selector<NewTaskViewModel,bool>(
                 selector: (context, vm) => vm.emptyCategory,
                 builder: (context, value, child) {
-                  print('build button');
                   return normalCupertinoButton(
                       onPress: value
                           ? null
@@ -279,7 +278,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           Selector<NewTaskViewModel, Category?>(
               selector: (context, vm) => vm.category,
               builder: (context, value, child) {
-                print('build category');
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: InkWell(
@@ -290,7 +288,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         _category = null;
                       }
                       context.read<NewTaskViewModel>().setCategory(_category);
-                      // setState(() {});
                     },
                     child: Opacity(
                         opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
