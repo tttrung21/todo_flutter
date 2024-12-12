@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
@@ -68,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          SizedBox(height: 8,),
+          SizedBox(
+            height: 8,
+          ),
           Hero(
               tag: 'AppIcon',
               child: Image.asset('assets/images/todo.png', width: 150, height: 150)),
@@ -164,8 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
               _hasInteracted = false;
               _key.currentState?.reset();
-              Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (context) => const RegisterScreen()));
+              Navigator.of(context).pushReplacement(createRoute(const RegisterScreen()));
               _emailTEC.clear();
               _passwordTEC.clear();
             },
@@ -202,9 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (context.mounted) {
       Navigator.pop(context);
       if (res) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ));
+        Navigator.of(context).pushReplacement(createRoute(const HomeScreen()));
       } else {
         showDialog(
           context: context,

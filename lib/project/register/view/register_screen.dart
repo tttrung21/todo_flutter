@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/components/text_field.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
 import 'package:todo_app/project/register/view_model/register_viewmodel.dart';
 import 'package:todo_app/style/color_style.dart';
+import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/utils/loading.dart';
 import 'package:todo_app/utils/show_dialog.dart';
 import 'package:todo_app/utils/validate.dart';
-
-import '../../../style/text_style.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   ///Widget
-  AppBar get _buildAppBar{
+  AppBar get _buildAppBar {
     return AppBar(backgroundColor: ModColorStyle.white, leading: SizedBox());
   }
 
@@ -142,7 +142,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -184,7 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
               _hasInteracted = false;
               _key.currentState?.reset();
-              Navigator.of(context).pushReplacement(_createRouteLogin());
+              Navigator.of(context).pushReplacement(createRoute(const LoginScreen()));
             },
             child: Text(
               S.of(context).auth_SignIn,
@@ -222,26 +221,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       }
     }
-  }
-
-  Route _createRouteLogin() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(-1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-        });
   }
 }

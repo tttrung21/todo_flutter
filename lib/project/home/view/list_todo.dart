@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/project/home/view/todo_item.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
@@ -31,7 +32,7 @@ class ListTodo extends StatelessWidget {
                 : InkWell(
                     onTap: () async {
                       final res = await Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) => AddTaskScreen(item: item)));
+                          .push(createRoute(AddTaskScreen(item: item)));
                       if (res is TodoModel) {
                         context.read<HomeViewModel>().updateTodo(res);
                       }

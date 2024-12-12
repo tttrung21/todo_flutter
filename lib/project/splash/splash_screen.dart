@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/project/home/view/home_screen.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
 
@@ -10,7 +11,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin{
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -33,21 +34,23 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       }
     });
   }
-  void _checkSession()  {
+
+  void _checkSession() {
     final client = Supabase.instance.client;
 
     if (client.auth.currentSession == null) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        createRoute(LoginScreen()),
       );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        createRoute(HomeScreen()),
       );
     }
   }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -61,7 +64,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       body: Center(
         child: ScaleTransition(
           scale: _animation,
-          child: Hero(tag: 'AppIcon', child: Image.asset('assets/images/todo.png', width: 100, height: 100)),
+          child: Hero(
+              tag: 'AppIcon',
+              child: Image.asset('assets/images/todo.png', width: 100, height: 100)),
         ),
       ),
     );

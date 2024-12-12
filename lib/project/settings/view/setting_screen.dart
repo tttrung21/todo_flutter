@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/localization/language_provider.dart';
 import 'package:todo_app/project/login/view/login_screen.dart';
@@ -85,8 +86,6 @@ class SettingScreen extends StatelessWidget {
 
   void onLogout(BuildContext context) {
     vm.logout();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
-    ));
+    Navigator.of(context).pushReplacement(createRoute(LoginScreen()));
   }
 }

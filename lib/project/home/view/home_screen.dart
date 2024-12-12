@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/model/todo_model.dart';
 
@@ -43,7 +44,8 @@ class HomeScreen extends StatelessWidget {
             color: ModColorStyle.background,
             child: normalCupertinoButton(
                 onPress: () async {
-                  final res = await Navigator.of(context).push(_createRouteAddTask());
+                  final res = await Navigator.of(context)
+                      .push(createRoute(const AddTaskScreen(), dx: 0, dy: 1));
                   if (res is TodoModel) {
                     context.read<HomeViewModel>().addTodo(res);
                   }
@@ -54,42 +56,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   ///Widgets
-  // AppBar _buildAppBarWidget(BuildContext context) {
-  //   final langProvider = context.read<LanguageProvider>();
-  //
-  //   final locale = langProvider.locale.toString();
-  //   final date = _formatDate(DateTime.now(), locale);
-  //   return AppBar(
-  //     backgroundColor: ModColorStyle.primary,
-  //     title: Text(
-  //       date,
-  //       style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-  //     ),
-  //     leading: InkWell(
-  //       onTap: () => changeLang(langProvider),
-  //       child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
-  //     ),
-  //     actions: [
-  //       Padding(
-  //         padding: const EdgeInsets.only(right: 16.0),
-  //         child: InkWell(
-  //           onTap: () {
-  //             onLogout(context);
-  //           },
-  //           child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
-  //         ),
-  //       ),
-  //     ],
-  //     centerTitle: true,
-  //     bottom: PreferredSize(
-  //         preferredSize: const Size.fromHeight(50),
-  //         child: Text(
-  //           S.of(context).home_Title,
-  //           style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
-  //         )),
-  //   );
-  // }
-
   Widget _buildBody(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final padding = MediaQuery.paddingOf(context);
@@ -112,26 +78,6 @@ class HomeScreen extends StatelessWidget {
                 pinned: true,
                 backgroundColor: ModColorStyle.primary,
                 expandedHeight: 146.0,
-                // title: LayoutBuilder(
-                //   builder: (context, constraints) {
-                //     final isCollapsed = constraints.maxHeight <= kToolbarHeight;
-                //     return isCollapsed
-                //         ? SizedBox.shrink()
-                //         : Text(
-                //             date,
-                //             style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
-                //           );
-                //   },
-                // ),
-                // bottom: PreferredSize(
-                //     preferredSize: Size.fromHeight(20),
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: Text(
-                //         S.of(context).home_Title,
-                //         style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
-                //       ),
-                //     )),
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: EdgeInsets.zero,
                   centerTitle: true,
@@ -164,9 +110,9 @@ class HomeScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: InkWell(
-                                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => SettingScreen(),
-                                        )),
+                                        onTap: () => Navigator.of(context).push(
+                                          createRoute(SettingScreen()),
+                                        ),
                                         child: const Icon(CupertinoIcons.settings,
                                             size: 24, color: ModColorStyle.white),
                                       ),
@@ -184,21 +130,6 @@ class HomeScreen extends StatelessWidget {
                   expandedTitleScale: 1.2,
                 ),
                 leading: SizedBox.shrink(),
-                // leading: InkWell(
-                //   onTap: () => changeLang(langProvider),
-                //   child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
-                // ),
-                // actions: [
-                //   Padding(
-                //     padding: const EdgeInsets.only(right: 16.0),
-                //     child: InkWell(
-                //       onTap: () {
-                //         onLogout(context);
-                //       },
-                //       child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
-                //     ),
-                //   ),
-                // ],
               ),
               SliverPadding(
                 padding: (DeviceInfo().isIos && width > height)
@@ -224,30 +155,6 @@ class HomeScreen extends StatelessWidget {
                       ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
                       : const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   sliver: ListTodo(listItem: completedList, isCompleteList: true))
-              // SliverList(
-              //     delegate: SliverChildBuilderDelegate((context, index) {
-              //   return Column(
-              //     mainAxisSize: MainAxisSize.min,
-              //     children: [
-              //       ListTodo(
-              //         height: height,
-              //         listItem: todoList,
-              //         isCompleteList: false,
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(vertical: 16),
-              //         child: Align(
-              //           alignment: Alignment.centerLeft,
-              //           child: Text(
-              //             S.of(context).home_Complete,
-              //             style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
-              //           ),
-              //         ),
-              //       ),
-              //       ListTodo(height: height, listItem: completedList, isCompleteList: true),
-              //     ],
-              //   );
-              // }, childCount: 1)),
             ],
           ),
           Selector<HomeViewModel, bool>(
@@ -268,39 +175,24 @@ class HomeScreen extends StatelessWidget {
   }
 
   ///Function
-  // void onLogout(BuildContext context) {
-  //   context.read<HomeViewModel>().logout();
-  //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //     builder: (context) => const LoginScreen(),
-  //   ));
-  // }
-  //
-  // void changeLang(LanguageProvider langProvider) {
-  //   if (langProvider.locale == const Locale('vi')) {
-  //     langProvider.setLanguage('en');
-  //   } else {
-  //     langProvider.setLanguage('vi');
-  //   }
-  // }
-
-  Route _createRouteAddTask() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const AddTaskScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-        });
-  }
+// Route _createRouteAddTask() {
+//   return PageRouteBuilder(
+//       pageBuilder: (context, animation, secondaryAnimation) => const AddTaskScreen(),
+//       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+//         const begin = Offset(0.0, 1.0);
+//         const end = Offset.zero;
+//         const curve = Curves.ease;
+//
+//         final tween = Tween(begin: begin, end: end);
+//         final curvedAnimation = CurvedAnimation(
+//           parent: animation,
+//           curve: curve,
+//         );
+//
+//         return SlideTransition(
+//           position: tween.animate(curvedAnimation),
+//           child: child,
+//         );
+//       });
+// }
 }
