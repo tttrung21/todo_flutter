@@ -8,10 +8,10 @@ import 'package:todo_app/localization/language_provider.dart';
 import 'package:todo_app/project/home/view/list_todo.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
+import 'package:todo_app/project/settings/view/setting_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
-import 'package:todo_app/project/login/view/login_screen.dart';
 import 'package:todo_app/utils/convert_utils.dart';
 import 'package:todo_app/utils/device_info.dart';
 
@@ -33,7 +33,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context, child) => Scaffold(
         backgroundColor: ModColorStyle.background,
         // appBar: _buildAppBarWidget(context),
-        appBar: AppBar(leading: SizedBox(),toolbarHeight: 0,backgroundColor: ModColorStyle.primary,),
+        appBar: AppBar(
+          leading: SizedBox(),
+          toolbarHeight: 0,
+          backgroundColor: ModColorStyle.primary,
+        ),
         body: _buildBody(context),
         bottomNavigationBar: BottomAppBar(
             color: ModColorStyle.background,
@@ -107,7 +111,7 @@ class HomeScreen extends StatelessWidget {
               SliverAppBar(
                 pinned: true,
                 backgroundColor: ModColorStyle.primary,
-                expandedHeight: 116.0,
+                expandedHeight: 146.0,
                 // title: LayoutBuilder(
                 //   builder: (context, constraints) {
                 //     final isCollapsed = constraints.maxHeight <= kToolbarHeight;
@@ -136,19 +140,38 @@ class HomeScreen extends StatelessWidget {
                       final isCollapsed = constraints.maxHeight <= 76;
                       return isCollapsed
                           ? Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(
                                 S.of(context).home_Title,
                                 style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
                               ),
-                          )
+                            )
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SizedBox(height: 8,),
-                                Text(
-                                  date,
-                                  style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                                // SizedBox(height: 8,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                    ),
+                                    Text(
+                                      date,
+                                      style:
+                                          ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: InkWell(
+                                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => SettingScreen(),
+                                        )),
+                                        child: const Icon(CupertinoIcons.settings,
+                                            size: 24, color: ModColorStyle.white),
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 Text(
                                   S.of(context).home_Title,
@@ -160,21 +183,23 @@ class HomeScreen extends StatelessWidget {
                   ),
                   expandedTitleScale: 1.2,
                 ),
-                leading: InkWell(
-                  onTap: () => changeLang(langProvider),
-                  child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
-                ),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        onLogout(context);
-                      },
-                      child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
-                    ),
-                  ),
-                ],              ),
+                leading: SizedBox.shrink(),
+                // leading: InkWell(
+                //   onTap: () => changeLang(langProvider),
+                //   child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
+                // ),
+                // actions: [
+                //   Padding(
+                //     padding: const EdgeInsets.only(right: 16.0),
+                //     child: InkWell(
+                //       onTap: () {
+                //         onLogout(context);
+                //       },
+                //       child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
+                //     ),
+                //   ),
+                // ],
+              ),
               SliverPadding(
                 padding: (DeviceInfo().isIos && width > height)
                     ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
@@ -184,7 +209,7 @@ class HomeScreen extends StatelessWidget {
               if (completedList.isNotEmpty)
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -243,20 +268,20 @@ class HomeScreen extends StatelessWidget {
   }
 
   ///Function
-  void onLogout(BuildContext context) {
-    context.read<HomeViewModel>().logout();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
-    ));
-  }
-
-  void changeLang(LanguageProvider langProvider) {
-    if (langProvider.locale == const Locale('vi')) {
-      langProvider.setLanguage('en');
-    } else {
-      langProvider.setLanguage('vi');
-    }
-  }
+  // void onLogout(BuildContext context) {
+  //   context.read<HomeViewModel>().logout();
+  //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //     builder: (context) => const LoginScreen(),
+  //   ));
+  // }
+  //
+  // void changeLang(LanguageProvider langProvider) {
+  //   if (langProvider.locale == const Locale('vi')) {
+  //     langProvider.setLanguage('en');
+  //   } else {
+  //     langProvider.setLanguage('vi');
+  //   }
+  // }
 
   Route _createRouteAddTask() {
     return PageRouteBuilder(

@@ -30,5 +30,9 @@
   "addTask_Time" : "Thời gian",
   "addTask_Notes" : "Ghi chú",
   "addTask_Save" : "Lưu",
-  "addTask_Update" : "Cập nhật"
+  "addTask_Update" : "Cập nhật",
+
+  "setting_Settings" : "Cài đặt",
+  "setting_Language" : "Ngôn ngữ",
+  "setting_LogOut" : "Đăng xuất"
 }

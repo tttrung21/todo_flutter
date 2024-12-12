@@ -61,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "home_EmptyData":
             MessageLookupByLibrary.simpleMessage("Không có dữ liệu"),
         "home_Title":
-            MessageLookupByLibrary.simpleMessage("Danh sách công việc")
+            MessageLookupByLibrary.simpleMessage("Danh sách công việc"),
+        "setting_Language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+        "setting_LogOut": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
+        "setting_Settings": MessageLookupByLibrary.simpleMessage("Cài đặt")
       };
 }

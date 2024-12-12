@@ -57,6 +57,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "common_Success": MessageLookupByLibrary.simpleMessage("Success"),
         "home_Complete": MessageLookupByLibrary.simpleMessage("Completed"),
         "home_EmptyData": MessageLookupByLibrary.simpleMessage("Empty Data"),
-        "home_Title": MessageLookupByLibrary.simpleMessage("My Todo List")
+        "home_Title": MessageLookupByLibrary.simpleMessage("My Todo List"),
+        "setting_Language": MessageLookupByLibrary.simpleMessage("Language"),
+        "setting_LogOut": MessageLookupByLibrary.simpleMessage("Log Out"),
+        "setting_Settings": MessageLookupByLibrary.simpleMessage("Settings")
       };
 }

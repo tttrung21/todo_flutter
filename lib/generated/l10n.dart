@@ -329,6 +329,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Settings`
+  String get setting_Settings {
+    return Intl.message(
+      'Settings',
+      name: 'setting_Settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get setting_Language {
+    return Intl.message(
+      'Language',
+      name: 'setting_Language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log Out`
+  String get setting_LogOut {
+    return Intl.message(
+      'Log Out',
+      name: 'setting_LogOut',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

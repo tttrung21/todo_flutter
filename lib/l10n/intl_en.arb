@@ -29,5 +29,9 @@
   "addTask_Time" : "Time",
   "addTask_Notes" : "Notes",
   "addTask_Save" : "Save",
-  "addTask_Update" : "Update"
+  "addTask_Update" : "Update",
+
+  "setting_Settings" : "Settings",
+  "setting_Language" : "Language",
+  "setting_LogOut" : "Log Out"
 }

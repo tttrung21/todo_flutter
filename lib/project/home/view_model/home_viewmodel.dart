@@ -7,7 +7,6 @@ class HomeViewModel with ChangeNotifier {
   List<TodoModel> _todos = [];
   bool _isLoading = false;
   final _todoService = TodoService();
-  final _userService = UserService();
   String errorMessage = '';
 
   List<TodoModel> get todos => _todos;
@@ -112,10 +111,6 @@ class HomeViewModel with ChangeNotifier {
     } finally {
       _setLoadingFalse();
     }
-  }
-
-  void logout() async {
-    await _userService.logout();
   }
 
   void _setLoadingTrue() {
