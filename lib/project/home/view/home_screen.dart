@@ -17,7 +17,10 @@ import 'package:todo_app/utils/convert_utils.dart';
 import 'package:todo_app/utils/device_info.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final GlobalKey<AnimatedListState> todoListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> completedListKey = GlobalKey<AnimatedListState>();
 
   String _formatDate(DateTime date, String locale) {
     if (locale == 'vi') {
@@ -135,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                 padding: (DeviceInfo().isIos && width > height)
                     ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
                     : const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                sliver: ListTodo(listItem: todoList, isCompleteList: false),
+                sliver: ListTodo(listItem: todoList, isCompleteList: false,listKey: todoListKey,),
               ),
               if (completedList.isNotEmpty)
                 SliverToBoxAdapter(
@@ -153,8 +156,8 @@ class HomeScreen extends StatelessWidget {
               SliverPadding(
                   padding: (DeviceInfo().isIos && width > height)
                       ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
-                      : const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  sliver: ListTodo(listItem: completedList, isCompleteList: true))
+                      : const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: ListTodo(listItem: completedList, isCompleteList: true,listKey: completedListKey,))
             ],
           ),
           Selector<HomeViewModel, bool>(

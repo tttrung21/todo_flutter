@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/api_service/todo_service.dart';
-import 'package:todo_app/api_service/user_service.dart';
 import 'package:todo_app/model/todo_model.dart';
 
 class HomeViewModel with ChangeNotifier {
@@ -85,7 +84,15 @@ class HomeViewModel with ChangeNotifier {
       final updatedTodo = _todos[todoIndex].copyWith(
         isCompleted: !_todos[todoIndex].isCompleted,
       );
-      _todos[todoIndex] = updatedTodo;
+      _todos.removeAt(todoIndex);
+      notifyListeners();
+
+      // Wait for the removal animation to complete
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      // Add the updated item back to the list
+      _todos.add(updatedTodo);
+      // _todos[todoIndex] = updatedTodo;
     } catch (e) {
       errorMessage = e.toString();
       rethrow;

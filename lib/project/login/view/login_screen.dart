@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (context.mounted) {
       Navigator.pop(context);
       if (res) {
-        Navigator.of(context).pushReplacement(createRoute(const HomeScreen()));
+        Navigator.of(context).pushReplacement(createRoute(HomeScreen()));
       } else {
         showDialog(
           context: context,

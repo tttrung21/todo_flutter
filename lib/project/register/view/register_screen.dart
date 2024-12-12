@@ -183,7 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
               _hasInteracted = false;
               _key.currentState?.reset();
-              Navigator.of(context).pushReplacement(createRoute(const LoginScreen()));
+              Navigator.of(context).pushReplacement(createRoute(const LoginScreen(),dx: -1,dy: 0));
             },
             child: Text(
               S.of(context).auth_SignIn,
