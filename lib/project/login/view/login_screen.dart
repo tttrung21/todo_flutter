@@ -37,8 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _emailTEC.text = 'trung@test.com';
-    _passwordTEC.text = 'password';
+    // _emailTEC.text = 'trung@test.com';
+    // _passwordTEC.text = 'password';
   }
 
   @override
