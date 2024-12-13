@@ -88,7 +88,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               child: Selector<NewTaskViewModel,bool>(
                 selector: (context, vm) => vm.emptyCategory,
                 builder: (context, value, child) {
-                  return normalCupertinoButton(
+                  return CircularCupertinoButton(
                       onPress: value
                           ? null
                           : () {
@@ -205,7 +205,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         const SizedBox(
           height: 4,
         ),
-        normalTextFormField(
+        CommonTextFormField(
           S.of(context).addTask_TaskTitle,
           _titleTEC,
           validator: (value) {
@@ -231,7 +231,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 4,
               ),
-              normalTextFormField(
+              CommonTextFormField(
                 S.of(context).addTask_Date,
                 _dateTEC,
                 readOnly: true,
@@ -260,7 +260,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 4,
               ),
-              normalTextFormField(S.of(context).addTask_Time, _timeTEC,
+              CommonTextFormField(S.of(context).addTask_Time, _timeTEC,
                   readOnly: true, image: Image.asset('assets/images/clock.png'), onTap: () {
                 _getTime(_timeTEC);
               })
@@ -330,7 +330,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         const SizedBox(
           height: 4,
         ),
-        normalTextFormField(S.of(context).addTask_Notes, _notesTEC, maxLine: 6)
+        CommonTextFormField(S.of(context).addTask_Notes, _notesTEC, maxLine: 6)
       ],
     );
   }

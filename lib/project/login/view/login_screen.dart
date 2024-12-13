@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
               child: Column(
                 children: [
-                  normalTextFormField(
+                  CommonTextFormField(
                     'Email',
                     _emailTEC,
                     isLabelText: true,
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  normalTextFormField(
+                  CommonTextFormField(
                     S.of(context).auth_Password,
                     _passwordTEC,
                     isObscure: true,
@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginButton(BuildContext context) {
-    return authCupertinoButton(
+    return AuthCupertinoButton(
       title: S.of(context).auth_SignIn,
       onPress: () {
         FocusManager.instance.primaryFocus?.unfocus();

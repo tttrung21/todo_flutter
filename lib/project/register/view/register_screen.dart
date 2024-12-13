@@ -93,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
               child: Column(
                 children: [
-                  normalTextFormField(
+                  CommonTextFormField(
                     'Email',
                     _emailTEC,
                     isLabelText: true,
@@ -107,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  normalTextFormField(
+                  CommonTextFormField(
                     S.of(context).auth_Password,
                     _passwordTEC,
                     isLabelText: true,
@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  normalTextFormField(
+                  CommonTextFormField(
                     S.of(context).auth_ConfirmPassword,
                     _confirmTEC,
                     isLabelText: true,
@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildRegisterButton(BuildContext context) {
     return Column(
       children: [
-        authCupertinoButton(
+        AuthCupertinoButton(
           title: S.of(context).auth_Register,
           onPress: () {
             FocusManager.instance.primaryFocus?.unfocus();

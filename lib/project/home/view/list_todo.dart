@@ -7,52 +7,12 @@ import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 
-// class ListTodo extends StatelessWidget {
-//   const ListTodo(
-//       {super.key,
-//       required this.listItem,
-//       required this.isCompleteList});
-//
-//   final List<TodoModel> listItem;
-//   final bool isCompleteList;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SliverToBoxAdapter(
-//       child: Container(
-//         decoration:
-//             BoxDecoration(color: ModColorStyle.white, borderRadius: BorderRadius.circular(16)),
-//         child: ListView.separated(
-//           physics: NeverScrollableScrollPhysics(),
-//           shrinkWrap: true,
-//           itemBuilder: (context, index) {
-//             final item = listItem[index];
-//             return isCompleteList
-//                 ? TodoItem(item: item)
-//                 : InkWell(
-//                     onTap: () async {
-//                       final res = await Navigator.of(context)
-//                           .push(createRoute(AddTaskScreen(item: item)));
-//                       if (res is TodoModel) {
-//                         context.read<HomeViewModel>().updateTodo(res);
-//                       }
-//                     },
-//                     child: TodoItem(item: item));
-//           },
-//           itemCount: listItem.length,
-//           separatorBuilder: (context, index) =>
-//               const Divider(color: ModColorStyle.disable, thickness: 0.1),
-//         ),
-//       ),
-//     );
-//   }
-// }
 class ListTodo extends StatefulWidget {
   const ListTodo({
     super.key,
     required this.listItem,
     required this.isCompleteList,
-    required this.listKey, // Add this parameter
+    required this.listKey,
   });
 
   final List<TodoModel> listItem;
@@ -71,7 +31,6 @@ class _ListTodoState extends State<ListTodo> {
     final oldItems = oldWidget.listItem;
     final newItems = widget.listItem;
 
-    // Determine added and removed items
     final removedItems = oldItems.where((item) => !newItems.contains(item)).toList();
     final addedItems = newItems.where((item) => !oldItems.contains(item)).toList();
 
@@ -105,7 +64,6 @@ class _ListTodoState extends State<ListTodo> {
       position: tween.animate(curvedAnimation),
       child: TodoItem(item: item),
     );
-    // );
   }
 
   Widget _buildItemWithAnimation(

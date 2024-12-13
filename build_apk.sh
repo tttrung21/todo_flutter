@@ -11,6 +11,9 @@ flutter clean
 # Installing dependencies
 flutter pub get
 
+# Generate localization
+flutter pub global run intl_utils:generate
+
 # Build APK
 if flutter build apk --release; then
     echo "Building APK successfully!"
