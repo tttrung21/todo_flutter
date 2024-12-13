@@ -1,175 +1,201 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/project/home/view/todo_item.dart';
+import 'package:todo_app/common/create_route.dart';
+import 'package:todo_app/components/buttons.dart';
+import 'package:todo_app/model/todo_model.dart';
+
+import 'package:todo_app/localization/language_provider.dart';
+import 'package:todo_app/project/home/view/list_todo.dart';
+import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
-import 'package:todo_app/project/auth/provider/auth_provider.dart';
-import 'package:todo_app/project/providers/language_provider.dart';
+import 'package:todo_app/project/settings/view/setting_screen.dart';
 import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/utils/convert_utils.dart';
+import 'package:todo_app/utils/device_info.dart';
 
-import '../../../generated/l10n.dart';
-import '../../auth/login/view/login_screen.dart';
-import '../../providers/todo_provider.dart';
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final GlobalKey<AnimatedListState> todoListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> completedListKey = GlobalKey<AnimatedListState>();
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late String date;
-  DateTime now = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        Provider.of<TodoProvider>(context, listen: false).fetchTodos();
-      },
-    );
+  String _formatDate(DateTime date, String locale) {
+    if (locale == 'vi') {
+      return '${date.day} Tháng ${date.month}, ${date.year}';
+    } else {
+      return ConvertUtils.Mdy(date);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
-    final langProvider = Provider.of<LanguageProvider>(context);
-
-    final locale = langProvider.locale.toString();
-    date = DateFormat('MMMM d, yyyy', locale).format(now);
-    return Scaffold(
-      backgroundColor: ModColorStyle.background,
-      appBar: AppBar(
-        backgroundColor: ModColorStyle.primary,
-        title: Text(
-          date,
-          style: ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => HomeViewModel()..fetchTodos(),
+      builder: (context, child) => Scaffold(
+        backgroundColor: ModColorStyle.background,
+        // appBar: _buildAppBarWidget(context),
+        appBar: AppBar(
+          leading: SizedBox(),
+          toolbarHeight: 0,
+          backgroundColor: ModColorStyle.primary,
         ),
-        leading: InkWell(
-          onTap: () {
-            if (langProvider.locale == const Locale('vi')) {
-              langProvider.setLanguage('en');
-            } else {
-              langProvider.setLanguage('vi');
-            }
-          },
-          child: const Icon(CupertinoIcons.globe, size: 24, color: ModColorStyle.white),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: InkWell(
-              onTap: () {
-                final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                authProvider.logout();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ));
-              },
-              child: const Icon(Icons.logout, size: 24, color: ModColorStyle.white),
-            ),
-          ),
-        ],
-        centerTitle: true,
-        bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
-            child: Text(
-              S.of(context).home_TieuDe,
-              style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
-            )),
-      ),
-      body: Stack(
-        children: [
-          const SizedBox(
-              height: 80, width: double.infinity, child: ColoredBox(color: ModColorStyle.primary)),
-          Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: CustomScrollView(
-                slivers: [
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                    final item = provider.todoList[index];
-                    return TodoItem(item: item);
-                  }, childCount: provider.todoList.length)),
-                  SliverToBoxAdapter(
-                    child: ColoredBox(
-                      color: ModColorStyle.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          S.of(context).home_HoanThanh,
-                          style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                    final item = provider.completedList[index];
-                    return TodoItem(item: item);
-                  }, childCount: provider.completedList.length)),
-                ],
-              )
-              // Column(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //         // height: 500,
-              //         // width: DeviceUtils.screenWidth - 32,
-              //         decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(16), color: ModColorStyle.white),
-              //         child: ListView.separated(
-              //           itemBuilder: (context, index) {
-              //             if (provider.todos.isEmpty) {
-              //               return Center(
-              //                 child: Text(
-              //                   S.of(context).home_KhongCoDuLieu,
-              //                   style: ModTextStyle.title1.copyWith(color: ModColorStyle.label),
-              //                 ),
-              //               );
-              //             }
-              //             final item = provider.todos[index];
-              //             return TodoItem(item: item);
-              //           },
-              //           itemCount: provider.todos.length,
-              //           separatorBuilder: (context, index) =>
-              //               const Divider(color: Colors.grey, thickness: 0.1),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // )
-              ),
-          if (provider.isLoading)
-            const Center(
-                child: CircularProgressIndicator(
-              color: ModColorStyle.primary,
-            ))
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: ModColorStyle.background,
-        child: CupertinoButton(
-          borderRadius: BorderRadius.circular(50),
-          padding: EdgeInsets.zero,
-          color: ModColorStyle.primary,
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const AddTaskScreen(),
-            ));
-          },
-          child: Text(
-            S.of(context).addTask_ThemViec,
-            style: ModTextStyle.button1.copyWith(color: ModColorStyle.white),
-          ),
-        ),
+        body: _buildBody(context),
+        bottomNavigationBar: BottomAppBar(
+            color: ModColorStyle.background,
+            child: normalCupertinoButton(
+                onPress: () async {
+                  final res = await Navigator.of(context)
+                      .push(createRoute(const AddTaskScreen(), dx: 0, dy: 1));
+                  if (res is TodoModel) {
+                    context.read<HomeViewModel>().addTodo(res);
+                  }
+                },
+                title: S.of(context).addTask_AddTask)),
       ),
     );
   }
+
+  ///Widgets
+  Widget _buildBody(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
+    final width = size.width;
+    final height = size.height;
+
+    final langProvider = context.read<LanguageProvider>();
+
+    final locale = langProvider.locale.toString();
+    final date = _formatDate(DateTime.now(), locale);
+
+    final todoList = context.watch<HomeViewModel>().todoList;
+    final completedList = context.watch<HomeViewModel>().completedList;
+    return SafeArea(
+      child: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                backgroundColor: ModColorStyle.primary,
+                expandedHeight: 146.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.zero,
+                  centerTitle: true,
+                  title: LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      final isCollapsed = constraints.maxHeight <= 76;
+                      return isCollapsed
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(
+                                S.of(context).home_Title,
+                                style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+                              ),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // SizedBox(height: 8,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                    ),
+                                    Text(
+                                      date,
+                                      style:
+                                          ModTextStyle.title2.copyWith(color: ModColorStyle.white),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: InkWell(
+                                        onTap: () => Navigator.of(context).push(
+                                          createRoute(SettingScreen()),
+                                        ),
+                                        child: const Icon(CupertinoIcons.settings,
+                                            size: 24, color: ModColorStyle.white),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  S.of(context).home_Title,
+                                  style: ModTextStyle.title1.copyWith(color: ModColorStyle.white),
+                                )
+                              ],
+                            );
+                    },
+                  ),
+                  expandedTitleScale: 1.2,
+                ),
+                leading: SizedBox.shrink(),
+              ),
+              SliverPadding(
+                padding: (DeviceInfo().isIos && width > height)
+                    ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
+                    : const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                sliver: ListTodo(listItem: todoList, isCompleteList: false,listKey: todoListKey,),
+              ),
+              if (completedList.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        S.of(context).home_Complete,
+                        style: ModTextStyle.title2.copyWith(color: CupertinoColors.label),
+                      ),
+                    ),
+                  ),
+                ),
+              SliverPadding(
+                  padding: (DeviceInfo().isIos && width > height)
+                      ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
+                      : const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: ListTodo(listItem: completedList, isCompleteList: true,listKey: completedListKey,))
+            ],
+          ),
+          Selector<HomeViewModel, bool>(
+            builder: (context, value, child) {
+              if (value) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: ModColorStyle.primary,
+                ));
+              }
+              return SizedBox.shrink();
+            },
+            selector: (context, vm) => vm.isLoading,
+          )
+        ],
+      ),
+    );
+  }
+
+  ///Function
+// Route _createRouteAddTask() {
+//   return PageRouteBuilder(
+//       pageBuilder: (context, animation, secondaryAnimation) => const AddTaskScreen(),
+//       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+//         const begin = Offset(0.0, 1.0);
+//         const end = Offset.zero;
+//         const curve = Curves.ease;
+//
+//         final tween = Tween(begin: begin, end: end);
+//         final curvedAnimation = CurvedAnimation(
+//           parent: animation,
+//           curve: curve,
+//         );
+//
+//         return SlideTransition(
+//           position: tween.animate(curvedAnimation),
+//           child: child,
+//         );
+//       });
+// }
 }

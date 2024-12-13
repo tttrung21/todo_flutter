@@ -22,36 +22,44 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "addTask_GhiChu": MessageLookupByLibrary.simpleMessage("Notes"),
-        "addTask_Gio": MessageLookupByLibrary.simpleMessage("Time"),
-        "addTask_Loai": MessageLookupByLibrary.simpleMessage("Category"),
-        "addTask_Luu": MessageLookupByLibrary.simpleMessage("Save"),
-        "addTask_Ngay": MessageLookupByLibrary.simpleMessage("Date"),
-        "addTask_ThemViec":
-            MessageLookupByLibrary.simpleMessage("Add New Task"),
-        "addTask_TieuDeViec":
-            MessageLookupByLibrary.simpleMessage("Task Title"),
-        "auth_DangKy": MessageLookupByLibrary.simpleMessage("Register"),
-        "auth_DangNhap": MessageLookupByLibrary.simpleMessage("Sign In"),
-        "auth_MatKhau": MessageLookupByLibrary.simpleMessage("Password"),
-        "auth_ThanhCongTaoTK": MessageLookupByLibrary.simpleMessage(
-            "Successfully create new account"),
-        "auth_XacNhanMK":
+        "addTask_AddTask": MessageLookupByLibrary.simpleMessage("Add New Task"),
+        "addTask_Category": MessageLookupByLibrary.simpleMessage("Category"),
+        "addTask_Date": MessageLookupByLibrary.simpleMessage("Date"),
+        "addTask_Notes": MessageLookupByLibrary.simpleMessage("Notes"),
+        "addTask_Save": MessageLookupByLibrary.simpleMessage("Save"),
+        "addTask_TaskTitle": MessageLookupByLibrary.simpleMessage("Task Title"),
+        "addTask_Time": MessageLookupByLibrary.simpleMessage("Time"),
+        "addTask_Update": MessageLookupByLibrary.simpleMessage("Update"),
+        "auth_AlreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
+            "Already have an account? Go "),
+        "auth_ConfirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
-        "common_LoiEmailKhongHopLe":
-            MessageLookupByLibrary.simpleMessage("Invalid email"),
-        "common_LoiMK8KyTu": MessageLookupByLibrary.simpleMessage(
-            "Password must be at least 8 characters long"),
-        "common_LoiMKKhac":
-            MessageLookupByLibrary.simpleMessage("Passwords do not match"),
-        "common_LoiThongTinTrong":
+        "auth_CreateSuccess": MessageLookupByLibrary.simpleMessage(
+            "Successfully create new account"),
+        "auth_NotHaveAccount": MessageLookupByLibrary.simpleMessage(
+            "Don\'t have an account yet? Try "),
+        "auth_Password": MessageLookupByLibrary.simpleMessage("Password"),
+        "auth_Register": MessageLookupByLibrary.simpleMessage("Register"),
+        "auth_SignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
+        "auth_To": MessageLookupByLibrary.simpleMessage("to "),
+        "auth_Welcome": MessageLookupByLibrary.simpleMessage("Welcome!"),
+        "common_Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "common_Delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "common_EmptyField":
             MessageLookupByLibrary.simpleMessage("Field cannot be empty!"),
-        "common_LoiXayRa":
-            MessageLookupByLibrary.simpleMessage("Error occurred"),
-        "common_ThanhCong": MessageLookupByLibrary.simpleMessage("Success"),
-        "home_HoanThanh": MessageLookupByLibrary.simpleMessage("Completed"),
-        "home_KhongCoDuLieu":
-            MessageLookupByLibrary.simpleMessage("Empty Data"),
-        "home_TieuDe": MessageLookupByLibrary.simpleMessage("My Todo List")
+        "common_Error": MessageLookupByLibrary.simpleMessage("Error occurred"),
+        "common_InvalidEmail":
+            MessageLookupByLibrary.simpleMessage("Invalid email"),
+        "common_PasswordErrorLength": MessageLookupByLibrary.simpleMessage(
+            "Password must be at least 8 characters long"),
+        "common_PasswordErrorMatch":
+            MessageLookupByLibrary.simpleMessage("Passwords do not match"),
+        "common_Success": MessageLookupByLibrary.simpleMessage("Success"),
+        "home_Complete": MessageLookupByLibrary.simpleMessage("Completed"),
+        "home_EmptyData": MessageLookupByLibrary.simpleMessage("Empty Data"),
+        "home_Title": MessageLookupByLibrary.simpleMessage("My Todo List"),
+        "setting_Language": MessageLookupByLibrary.simpleMessage("Language"),
+        "setting_LogOut": MessageLookupByLibrary.simpleMessage("Log Out"),
+        "setting_Settings": MessageLookupByLibrary.simpleMessage("Settings")
       };
 }

@@ -10,5 +10,6 @@ class ModColorStyle{
   static const border = Color(0xFFE0E0E0);
   static const error = Colors.red;
   static const success = Colors.green;
+  static const warning = Colors.orange;
   static const disable = Colors.grey;
 }

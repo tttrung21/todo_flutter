@@ -18,12 +18,12 @@ class ShowLoading{
               alignment: AlignmentDirectional.center,
               children: [
                 SpinKitRipple(
-                  color: ModColorStyle.white,
+                  color: ModColorStyle.primary,
                   size: 100,
                   borderWidth: 40,
                 ),
                 SpinKitRing(
-                  color: ModColorStyle.white,
+                  color: ModColorStyle.primary,
                   size: 60,
                   lineWidth: 4,
                 ),

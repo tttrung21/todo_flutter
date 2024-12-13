@@ -22,37 +22,48 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "addTask_GhiChu": MessageLookupByLibrary.simpleMessage("Ghi chú"),
-        "addTask_Gio": MessageLookupByLibrary.simpleMessage("Giờ"),
-        "addTask_Loai": MessageLookupByLibrary.simpleMessage("Loại"),
-        "addTask_Luu": MessageLookupByLibrary.simpleMessage("Lưu"),
-        "addTask_Ngay": MessageLookupByLibrary.simpleMessage("Ngày"),
-        "addTask_ThemViec":
+        "addTask_AddTask":
             MessageLookupByLibrary.simpleMessage("Thêm công việc mới"),
-        "addTask_TieuDeViec":
+        "addTask_Category": MessageLookupByLibrary.simpleMessage("Danh mục"),
+        "addTask_Date": MessageLookupByLibrary.simpleMessage("Ngày"),
+        "addTask_Notes": MessageLookupByLibrary.simpleMessage("Ghi chú"),
+        "addTask_Save": MessageLookupByLibrary.simpleMessage("Lưu"),
+        "addTask_TaskTitle":
             MessageLookupByLibrary.simpleMessage("Tiêu đề công việc"),
-        "auth_DangKy": MessageLookupByLibrary.simpleMessage("Đăng ký"),
-        "auth_DangNhap": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
-        "auth_MatKhau": MessageLookupByLibrary.simpleMessage("Mật khẩu"),
-        "auth_ThanhCongTaoTK":
-            MessageLookupByLibrary.simpleMessage("Tạo tài khoản thành công"),
-        "auth_XacNhanMK":
+        "addTask_Time": MessageLookupByLibrary.simpleMessage("Thời gian"),
+        "addTask_Update": MessageLookupByLibrary.simpleMessage("Cập nhật"),
+        "auth_AlreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Đã có tài khoản? Tới "),
+        "auth_ConfirmPassword":
             MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
-        "common_LoiEmailKhongHopLe":
-            MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
-        "common_LoiMK8KyTu": MessageLookupByLibrary.simpleMessage(
-            "Mật khẩu phải có ít nhất 8 ký tự"),
-        "common_LoiMKKhac":
-            MessageLookupByLibrary.simpleMessage("Mật khẩu không khớp"),
-        "common_LoiThongTinTrong":
+        "auth_CreateSuccess": MessageLookupByLibrary.simpleMessage(
+            "Tạo tài khoản mới thành công"),
+        "auth_NotHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Chưa có tài khoản? Hãy thử "),
+        "auth_Password": MessageLookupByLibrary.simpleMessage("Mật khẩu"),
+        "auth_Register": MessageLookupByLibrary.simpleMessage("Đăng ký"),
+        "auth_SignIn": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
+        "auth_To": MessageLookupByLibrary.simpleMessage("đến "),
+        "auth_Welcome": MessageLookupByLibrary.simpleMessage("Chào mừng!"),
+        "common_Cancel": MessageLookupByLibrary.simpleMessage("Huỷ"),
+        "common_Delete": MessageLookupByLibrary.simpleMessage("Xóa"),
+        "common_EmptyField":
             MessageLookupByLibrary.simpleMessage("Trường không được để trống!"),
-        "common_LoiXayRa":
-            MessageLookupByLibrary.simpleMessage("Đã xảy ra lỗi"),
-        "common_ThanhCong": MessageLookupByLibrary.simpleMessage("Thành công"),
-        "home_HoanThanh": MessageLookupByLibrary.simpleMessage("Đã hoàn thành"),
-        "home_KhongCoDuLieu":
+        "common_Error": MessageLookupByLibrary.simpleMessage("Đã xảy ra lỗi"),
+        "common_InvalidEmail":
+            MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
+        "common_PasswordErrorLength": MessageLookupByLibrary.simpleMessage(
+            "Mật khẩu phải có ít nhất 8 ký tự"),
+        "common_PasswordErrorMatch":
+            MessageLookupByLibrary.simpleMessage("Mật khẩu không khớp"),
+        "common_Success": MessageLookupByLibrary.simpleMessage("Thành công"),
+        "home_Complete": MessageLookupByLibrary.simpleMessage("Đã hoàn thành"),
+        "home_EmptyData":
             MessageLookupByLibrary.simpleMessage("Không có dữ liệu"),
-        "home_TieuDe":
-            MessageLookupByLibrary.simpleMessage("Danh sách công việc")
+        "home_Title":
+            MessageLookupByLibrary.simpleMessage("Danh sách công việc"),
+        "setting_Language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+        "setting_LogOut": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
+        "setting_Settings": MessageLookupByLibrary.simpleMessage("Cài đặt")
       };
 }
