@@ -30,7 +30,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   TextEditingController _dateTEC = TextEditingController();
   TextEditingController _timeTEC = TextEditingController();
   TextEditingController _notesTEC = TextEditingController();
-  Category? _category;
+  Category _category = Category.CategoryTask;
   bool _hasInteracted = false;
   bool _isUpdate = false;
   DateTime? _now;
@@ -48,8 +48,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
-  bool _getOpacity(Category cat) {
-    return _category == cat || _category == null;
+  bool _getBorder(Category cat) {
+    return _category == cat;
   }
 
   Future<void> _getDate(TextEditingController tec) async {
@@ -85,7 +85,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           body: _buildBody(context),
           bottomNavigationBar: BottomAppBar(
               color: ModColorStyle.background,
-              child: Selector<NewTaskViewModel,bool>(
+              child: Selector<NewTaskViewModel, bool>(
                 selector: (context, vm) => vm.emptyCategory,
                 builder: (context, value, child) {
                   return CircularCupertinoButton(
@@ -157,21 +157,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    // final size = MediaQuery.sizeOf(context);
-    // final padding = MediaQuery.paddingOf(context);
-    // final width = size.width;
-    // final height = size.height;
     return SafeArea(
       child: Form(
           key: _key,
           autovalidateMode:
               _hasInteracted ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
-            padding:
-            // (DeviceInfo().isIos && width > height)
-            //     ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
-            //     :
-            const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -282,42 +274,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           Selector<NewTaskViewModel, Category?>(
               selector: (context, vm) => vm.category,
               builder: (context, value, child) {
-                return Padding(
+                final cat = Category.values[i];
+                return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: _getBorder(cat) ? ModColorStyle.primary : ModColorStyle.white)),
                   child: InkWell(
                     onTap: () {
-                      if (_category == null || _category != Category.values[i]) {
-                        _category = Category.values[i];
-                      } else {
-                        _category = null;
+                      if (_category != cat) {
+                        _category = cat;
                       }
                       context.read<NewTaskViewModel>().setCategory(_category);
                     },
-                    child: Opacity(
-                        opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
-                        child: Image.asset('assets/images/${Category.values[i].name}.png')),
+                    child: Image.asset('assets/images/${cat.name}.png'),
                   ),
                 );
-              }
-
-              // child: Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //   child: InkWell(
-              //     onTap: () {
-              //       if (_category == null || _category != Category.values[i]) {
-              //         _category = Category.values[i];
-              //       } else {
-              //         _category = null;
-              //       }
-              //       context.read<NewTaskViewModel>().setCategory(_category);
-              //       // setState(() {});
-              //     },
-              //     child: Opacity(
-              //         opacity: _getOpacity(Category.values[i]) ? 1 : 0.3,
-              //         child: Image.asset('assets/images/${Category.values[i].name}.png')),
-              //   ),
-              // ),
-              )
+              })
       ],
     );
   }
@@ -344,7 +318,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         ///Id is auto incremented in db
         id: _isUpdate ? widget.item?.id : null,
         title: _titleTEC.text,
-        category: _category!.name,
+        category: _category.name,
         dueDate: _dateTEC.text,
         dueTime: _timeTEC.text,
         notes: _notesTEC.text,

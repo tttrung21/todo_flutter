@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000325">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: cd /Users/Trung/Desktop/flutter_projects/todo_app/" time="0.009028">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: /Users/Trung/Desktop/flutter_projects/todo_app/runner.sh" time="87.819563">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: firebase_app_distribution" time="87.753771">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

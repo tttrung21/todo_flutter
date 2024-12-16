@@ -4,15 +4,16 @@ set -e
 
 # Flutter Build APK Script
 echo "=== Building Flutter APK ==="
+cd "$(dirname "$0")/../../.."
 
 # Clean old build
-flutter clean
+sh "flutter clean"
 
 # Installing dependencies
-flutter pub get
+sh flutter pub get
 
 # Generate localization
-flutter pub global run intl_utils:generate
+sh flutter pub global run intl_utils:generate
 
 # Build APK
 if flutter build apk --release; then

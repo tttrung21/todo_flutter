@@ -1,0 +1,67 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "stable"
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Generate localization
+      - name: Generate Localization
+        run: flutter pub global run intl_utils:generate
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Build iOS (only on macOS runners)
+      - name: Build iOS
+        if: runner.os == 'macOS'
+        run: flutter build ios --release
+
+  deploy:
+    name: Deploy to Firebase App Distribution
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "stable"
+
+      # Install Fastlane
+      - name: Install Fastlane
+        run: |
+          gem install bundler
+          bundle install --path vendor/bundle
+
+      # Add Firebase App Distribution plugin to Fastlane
+      - name: Add Firebase App Distribution Plugin
+        run: fastlane add_plugin firebase_app_distribution
