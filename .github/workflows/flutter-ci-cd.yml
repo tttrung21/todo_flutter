@@ -32,6 +32,10 @@ jobs:
           channel: 'stable'
       - run: flutter --version
       # Generate key.properties
+      - name: Setup Keystore File
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/key_todo.jks
+
       - name: Setup key.properties
         run: |
           echo "storePassword=${{ secrets.STORE_PASSWORD }}" > android/key.properties
@@ -41,7 +45,7 @@ jobs:
       # Setup Environment Variables
       - name: Create .env file
         run: |
-          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "API_KEY=${{ secrets.API_KEY }}" > .env
           echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> .env
 
       - name: Debug .env file
