@@ -31,8 +31,12 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/lib/generated/
 /android/key.properties
+/android/app/key_todo.jks
+key_todo.jks.base64
+# Generated files
+/lib/generated/
+pubspec.lock
 
 # Symbolication related
 app.*.symbols
