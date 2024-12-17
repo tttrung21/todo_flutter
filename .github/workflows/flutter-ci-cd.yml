@@ -29,10 +29,6 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # Generate localization
-      - name: Generate Localization
-        run: flutter pub global run intl_utils:generate
-
       - name: Build APK
         run: flutter build apk --release
 
