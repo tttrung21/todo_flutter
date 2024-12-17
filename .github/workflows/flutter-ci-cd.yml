@@ -41,7 +41,7 @@ jobs:
           echo "storePassword=${{ secrets.STORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=app/key_todo.jks" >> android/key.properties
+          echo "storeFile=key_todo.jks" >> android/key.properties
       # Setup Environment Variables
       - name: Create .env file
         run: |
@@ -83,7 +83,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up Flutter
       - name: Setup Flutter
