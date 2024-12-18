@@ -16,7 +16,10 @@ import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/utils/validate.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key, this.item});
+  const AddTaskScreen({
+    super.key,
+    this.item,
+  });
 
   final TodoModel? item;
 

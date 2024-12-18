@@ -6,7 +6,7 @@ import 'package:todo_app/components/buttons.dart';
 import 'package:todo_app/model/todo_model.dart';
 
 import 'package:todo_app/localization/language_provider.dart';
-import 'package:todo_app/project/home/view/list_todo.dart';
+import 'package:todo_app/project/home/view/widgets/list_todo.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/project/settings/view/setting_screen.dart';
@@ -69,7 +69,6 @@ class HomeScreen extends StatelessWidget {
 
     final locale = langProvider.locale.toString();
     final date = _formatDate(DateTime.now(), locale);
-
     final todoList = context.watch<HomeViewModel>().todoList;
     final completedList = context.watch<HomeViewModel>().completedList;
     return SafeArea(
@@ -138,7 +137,11 @@ class HomeScreen extends StatelessWidget {
                 padding: (DeviceInfo().isIos && width > height)
                     ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
                     : const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                sliver: ListTodo(listItem: todoList, isCompleteList: false,listKey: todoListKey,),
+                sliver: ListTodo(
+                  listItem: todoList,
+                  isCompleteList: false,
+                  listKey: todoListKey,
+                ),
               ),
               if (completedList.isNotEmpty)
                 SliverToBoxAdapter(
@@ -157,7 +160,11 @@ class HomeScreen extends StatelessWidget {
                   padding: (DeviceInfo().isIos && width > height)
                       ? EdgeInsets.fromLTRB(padding.left + 8, 16, padding.right + 8, 16)
                       : const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  sliver: ListTodo(listItem: completedList, isCompleteList: true,listKey: completedListKey,))
+                  sliver: ListTodo(
+                    listItem: completedList,
+                    isCompleteList: true,
+                    listKey: completedListKey,
+                  ))
             ],
           ),
           Selector<HomeViewModel, bool>(

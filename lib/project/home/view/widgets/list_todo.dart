@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/create_route.dart';
 import 'package:todo_app/model/todo_model.dart';
-import 'package:todo_app/project/home/view/todo_item.dart';
+import 'package:todo_app/project/home/view/widgets/todo_item.dart';
 import 'package:todo_app/project/home/view_model/home_viewmodel.dart';
 import 'package:todo_app/project/newtask/view/addtask_screen.dart';
 import 'package:todo_app/style/color_style.dart';

@@ -3,7 +3,12 @@ import 'package:todo_app/style/color_style.dart';
 import 'package:todo_app/style/text_style.dart';
 
 class CircularCupertinoButton extends StatelessWidget {
-  const CircularCupertinoButton({super.key, this.onPress, required this.title, this.style});
+  const CircularCupertinoButton({
+    super.key,
+    this.onPress,
+    required this.title,
+    this.style,
+  });
 
   final void Function()? onPress;
   final String title;

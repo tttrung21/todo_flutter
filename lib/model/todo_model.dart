@@ -17,7 +17,7 @@ class TodoModel {
     this.dueTime,
     this.isCompleted = false,
     required this.userId,
-    this.deviceId
+    this.deviceId,
   });
 
   Map<String, dynamic> toJson() {
