@@ -91,6 +91,20 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter --version
+      # Set up Ruby environment
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      # Install Bundler (if not already installed)
+      - name: Install Bundler
+        run: gem install bundler --user-install
+
+      # Add Bundler path to PATH environment variable
+      - name: Add Bundler to PATH
+        run: echo "$HOME/.local/share/gem/ruby/3.0.0/bin" >> $GITHUB_PATH
 
       # Install Fastlane
       - name: Install Fastlane
