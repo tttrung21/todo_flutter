@@ -3,7 +3,7 @@
 set -e
 
 # Flutter Build APK Script
-
+cd ..
 # Clean old build
 flutter clean
 
