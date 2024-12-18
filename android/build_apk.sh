@@ -5,11 +5,11 @@ set -e
 # Flutter Build APK Script
 
 # Clean old build
-sh "flutter clean"
+flutter clean
 
 # Installing dependencies
-sh flutter pub get
-sh flutter pub global activate intl_utils
+flutter pub get
+flutter pub global activate intl_utils
 
 flutter pub global run intl_utils:generate
 
