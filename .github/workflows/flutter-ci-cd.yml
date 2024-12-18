@@ -99,25 +99,30 @@ jobs:
           bundler-cache: true
 
       # Install Bundler (if not already installed)
-      - name: Install Bundler
-        run: gem install bundler --user-install
-
-      # Add Bundler path to PATH environment variable
-      - name: Add Bundler to PATH
-        run: echo "$HOME/.local/share/gem/ruby/3.0.0/bin" >> $GITHUB_PATH
+#      - name: Install Bundler
+#        run: gem install bundler --user-install
+#
+#      # Add Bundler path to PATH environment variable
+#      - name: Add Bundler to PATH
+#        run: echo "$HOME/.local/share/gem/ruby/3.0.0/bin" >> $GITHUB_PATH
 
       # Install Fastlane
+#      - name: Install Fastlane
+#        run: |
+#            cd android
+#            bundle config set path 'vendor/bundle'
+#            bundle install
       - name: Install Fastlane
         run: |
-            cd android
-            bundle config set path 'vendor/bundle'
-            bundle install
-
+          gem install fastlane
       # Add Firebase App Distribution plugin to Fastlane
-      - name: Add Firebase App Distribution Plugin
-        run: |
-            cd android
-            fastlane add_plugin firebase_app_distribution
+#      - name: Add Firebase App Distribution Plugin
+#        run: |
+#            cd android
+#            fastlane add_plugin firebase_app_distribution
+      - name: Install Fastlane Firebase App Distribution plugin
+        working-directory: android
+        run: fastlane add_plugin firebase_app_distribution
 
       # Deploy to Firebase
       - name: Deploy to Firebase
