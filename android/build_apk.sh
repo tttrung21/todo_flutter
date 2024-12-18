@@ -3,7 +3,7 @@
 set -e
 
 # Flutter Build APK Script
-cd ..
+cd "$(dirname "$0")/.."
 # Clean old build
 flutter clean
 
