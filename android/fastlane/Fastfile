@@ -4,8 +4,7 @@ platform :android do
   desc "Build APK and Distribute to Firebase"
 
   lane :beta do
-#     sh "./runner.sh"
-    sh "./build_apk.sh"
+    sh "../build_apk.sh"
 
     # Distribute to Firebase
     firebase_app_distribution(
