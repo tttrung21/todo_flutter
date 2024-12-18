@@ -96,6 +96,7 @@ jobs:
       - name: Install Fastlane
         run: |
           gem install bundler --user-install
+          export PATH=$PATH:~/.local/share/gem/ruby/3.0.0/bin
           bundle install --path vendor/bundle
 
       # Add Firebase App Distribution plugin to Fastlane
