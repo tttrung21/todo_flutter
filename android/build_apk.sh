@@ -12,8 +12,8 @@ sh "flutter clean"
 # Installing dependencies
 sh flutter pub get
 
-# Generate localization
-sh flutter pub global run intl_utils:generate
+## Generate localization
+#sh flutter pub global run intl_utils:generate
 
 # Build APK
 if flutter build apk --release; then
