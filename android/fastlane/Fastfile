@@ -5,7 +5,7 @@ platform :android do
 
   lane :beta do
     # Run the build_apk.sh script
-    sh "cd .. && ./runner.sh"
+    sh "cd $(git rev-parse --show-toplevel) && ./runner.sh"
 
     # Distribute to Firebase
     firebase_app_distribution(

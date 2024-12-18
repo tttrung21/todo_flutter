@@ -115,12 +115,10 @@ jobs:
 
       # Add Firebase App Distribution plugin to Fastlane
       - name: Add Firebase App Distribution Plugin
-        run: |
-            cd android
+        run:
             fastlane add_plugin firebase_app_distribution
 
       # Deploy to Firebase
       - name: Deploy to Firebase
-        run: |
-            cd android 
+        run:
             bundle exec fastlane beta
