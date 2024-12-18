@@ -5,9 +5,7 @@ platform :android do
 
   lane :beta do
     # Run the build_apk.sh script
-    sh "cd /Users/Trung/Desktop/flutter_projects/todo_app/"
-
-    sh "/Users/Trung/Desktop/flutter_projects/todo_app/runner.sh"
+    sh "cd .. && ./runner.sh"
 
     # Distribute to Firebase
     firebase_app_distribution(
