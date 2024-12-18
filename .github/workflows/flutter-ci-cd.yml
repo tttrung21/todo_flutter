@@ -123,4 +123,4 @@ jobs:
       - name: Deploy to Firebase
         run: |
             cd android 
-            bundle exec fastlane beta
+            fastlane beta

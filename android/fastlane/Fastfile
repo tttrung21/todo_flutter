@@ -5,13 +5,14 @@ platform :android do
 
   lane :beta do
     # Run the build_apk.sh script
-    sh "cd $(git rev-parse --show-toplevel) && ./runner.sh"
+    sh "cd .."
+    sh "./runner.sh"
 
     # Distribute to Firebase
     firebase_app_distribution(
       app: "1:165346579800:android:fbeed45319289dc523812d",
       firebase_cli_token: "1//0eRVl3pl6wB8MCgYIARAAGA4SNwF-L9Irx2ZfpoG6qvQjNBoZTWPvjs1hB21C9WTzk-LCAURM4AN2BtDtSNwKW_aWROpZf4vCxeI",
-      apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
+      apk_path: "./build/app/outputs/flutter-apk/app-release.apk",
       groups: "testers"
     )
   end
