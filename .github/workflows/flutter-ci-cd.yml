@@ -95,7 +95,7 @@ jobs:
       # Install Fastlane
       - name: Install Fastlane
         run: |
-          gem install bundler
+          gem install bundler --user-install
           bundle install --path vendor/bundle
 
       # Add Firebase App Distribution plugin to Fastlane
