@@ -11,6 +11,9 @@ flutter clean
 flutter pub get
 flutter pub global activate intl_utils
 
+export PUB_CACHE="$HOME/.pub-cache"
+export PATH="$PUB_CACHE/bin:$PATH"
+
 flutter pub global run intl_utils:generate
 
 # Build APK
